@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useChatStore } from "@/store/useChatStore";
 import { BBCodeText } from "@/components/BBCodeText";
+import { useTranslation } from "react-i18next";
 
 const formatTime = (ts: number) => {
   const date = new Date(ts);
@@ -20,6 +21,7 @@ const formatTime = (ts: number) => {
 };
 
 export function ConsoleArea() {
+  const { t } = useTranslation();
   const consoleLogs = useChatStore((state) => state.consoleLogs);
   const processCommand = useChatStore((state) => state.processCommand);
   const setSystemNotice = useChatStore((state) => state.setSystemNotice);
@@ -33,13 +35,11 @@ export function ConsoleArea() {
     if (!textTrimmed) return;
 
     if (!textTrimmed.startsWith("/")) {
-      setSystemNotice(
-        "No puedes enviar mensajes normales aquí. Usa un comando (ej. /join).",
-      );
+      setSystemNotice(t("consoleArea.noNormalMessages"));
     } else {
       const isCmd = processCommand("console", inputText, false);
       if (!isCmd) {
-        setSystemNotice("Comando no reconocido o inválido.");
+        setSystemNotice(t("consoleArea.invalidCommand"));
       }
     }
 
@@ -76,7 +76,7 @@ export function ConsoleArea() {
             style={styles.chatInput}
             value={inputText}
             onChangeText={setInputText}
-            placeholder="Escribe un comando (ej. /status, /join)..."
+            placeholder={t("consoleArea.inputPlaceholder")}
             placeholderTextColor="#888"
             onSubmitEditing={handleSend}
             autoCapitalize="none"
@@ -89,7 +89,7 @@ export function ConsoleArea() {
             onPress={handleSend}
             disabled={!inputText.trim()}
           >
-            <Text style={styles.sendButtonText}>EJECUTAR</Text>
+            <Text style={styles.sendButtonText}>{t("consoleArea.executeBtn")}</Text>
           </TouchableOpacity>
         </View>
       </View>

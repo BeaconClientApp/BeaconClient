@@ -10,8 +10,10 @@ import {
 import { useChatStore } from "@/store/useChatStore";
 import { Ionicons } from "@expo/vector-icons";
 import { getGenderColor, getStatusIcon } from "@/constants/theme";
+import { useTranslation } from "react-i18next";
 
 export function RightMenu({ onSelect }: { onSelect: () => void }) {
+  const { t } = useTranslation();
   const friends = useChatStore((state) => state.friends);
   const onlineCharacters = useChatStore((state) => state.onlineCharacters);
   const globalOps = useChatStore((state) => state.globalOps);
@@ -47,18 +49,21 @@ export function RightMenu({ onSelect }: { onSelect: () => void }) {
   const friendSections = [];
   if (onlineAmigos.length > 0)
     friendSections.push({
-      title: `🟢 Amigos (${onlineAmigos.length})`,
+      title: t("rightMenu.sections.onlineFriends", { count: onlineAmigos.length }),
       data: onlineAmigos,
+      type: "online",
     });
   if (onlineBookmarks.length > 0)
     friendSections.push({
-      title: `🔖 Bookmarks (${onlineBookmarks.length})`,
+      title: t("rightMenu.sections.onlineBookmarks", { count: onlineBookmarks.length }),
       data: onlineBookmarks,
+      type: "online",
     });
   if (offlineFriends.length > 0)
     friendSections.push({
-      title: `⚪ Desconectados (${offlineFriends.length})`,
+      title: t("rightMenu.sections.offlineFriends", { count: offlineFriends.length }),
       data: offlineFriends,
+      type: "offline",
     });
 
   const getRoleData = (name: string) => {
@@ -128,7 +133,7 @@ export function RightMenu({ onSelect }: { onSelect: () => void }) {
               ]}
             >
               {" "}
-              Miembros ({roomMembers.length})
+              {t("rightMenu.tabs.members", { count: roomMembers.length })}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -147,12 +152,12 @@ export function RightMenu({ onSelect }: { onSelect: () => void }) {
               ]}
             >
               {" "}
-              Bookmarks
+              {t("rightMenu.tabs.bookmarks")}
             </Text>
           </TouchableOpacity>
         </View>
       ) : (
-        <Text style={styles.sectionTitle}>Lista de Contactos</Text>
+        <Text style={styles.sectionTitle}>{t("rightMenu.contactList")}</Text>
       )}
 
       {tab === "members" && isRoom && (
@@ -172,7 +177,7 @@ export function RightMenu({ onSelect }: { onSelect: () => void }) {
             <Text style={styles.sectionHeader}>{title}</Text>
           )}
           renderItem={({ item, section }) => {
-            const isOnline = !section.title.includes("Desconectados");
+            const isOnline = section.type !== "offline";
             const charData = onlineCharacters[item];
             const roleData = getRoleData(item);
 

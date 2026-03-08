@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useChatStore } from './useChatStore';
+import i18n from '@/i18n';
 
 interface AuthState {
     account: string | null;
@@ -55,7 +56,10 @@ export const useAuthStore = create<AuthState>((set) => ({
                 await AsyncStorage.removeItem('@chat_ticket'); await AsyncStorage.removeItem('@chat_characters'); await AsyncStorage.removeItem('@chat_password');
             }
             set({ ticket: data.ticket, characters: data.characters || [], account: account, passwordInSession: password, isLoading: false });
-        } catch (err) { console.log(err); set({ error: 'Error de red al iniciar sesión', isLoading: false }); }
+        } catch (err) {
+            console.log(err);
+            set({ error: i18n.t("login.networkError"), isLoading: false });
+        }
     },
 
     logout: async () => {

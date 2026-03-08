@@ -11,6 +11,8 @@ import { useChatStore } from "@/store/useChatStore";
 import { useSettingsStore } from "@/store/useSettingsStore";
 import { Ionicons } from "@expo/vector-icons";
 import { getGenderColor } from "@/constants/theme";
+import { TFunction } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface BBCodeTextProps {
   text: string;
@@ -21,6 +23,7 @@ const parseBBCode = (
   text: string,
   isAction: boolean = false,
   globalFontSize: number,
+  t: TFunction
 ) => {
   if (!text) return null;
 
@@ -236,7 +239,7 @@ const parseBBCode = (
           .toLowerCase()
           .indexOf(sessionEndTag, matchEnd);
         if (sessionEndIndex !== -1) {
-          const sessionName = value || "Sala Privada";
+          const sessionName = value || t("bbcode.privateRoom");
           let channelId = text.substring(matchEnd, sessionEndIndex);
 
           if (channelId.toLowerCase().startsWith("adh-")) {
@@ -380,6 +383,7 @@ const SpoilerText = ({
   content: string;
   globalFontSize: number;
 }) => {
+  const { t } = useTranslation();
   const [isHidden, setIsHidden] = useState(true);
   return (
     <TouchableOpacity
@@ -396,7 +400,7 @@ const SpoilerText = ({
           isHidden ? { color: "transparent" } : { color: "#e0e0e0" },
         ]}
       >
-        {isHidden ? "Toca para ver el spoiler" : content}
+        {isHidden ? t("bbcode.spoilerText") : content}
       </Text>
     </TouchableOpacity>
   );
@@ -465,12 +469,13 @@ const SessionLink = ({
 };
 
 export const BBCodeText: React.FC<BBCodeTextProps> = ({ text, isAction }) => {
+  const { t } = useTranslation();
   const globalFontSize =
     useSettingsStore((state) => state.globalSettings.fontSize) || 14;
 
   return (
     <Text style={{ lineHeight: globalFontSize * 1.5 }}>
-      {parseBBCode(text, isAction, globalFontSize)}
+      {parseBBCode(text, isAction, globalFontSize, t)}
     </Text>
   );
 };

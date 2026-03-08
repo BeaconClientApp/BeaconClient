@@ -16,6 +16,7 @@ import { useChatStore, LogManager, ChatMessage } from "@/store/useChatStore";
 import { BBCodeText } from "@/components/BBCodeText";
 import { useSettingsStore } from "@/store/useSettingsStore";
 import { getGenderColor } from "@/constants/theme";
+import { useTranslation } from "react-i18next";
 
 const formatTime = (ts?: number) => {
   if (!ts) return "";
@@ -34,6 +35,7 @@ const normalizeString = (str: string) =>
     .toLowerCase();
 
 export function LogsViewer() {
+  const { t } = useTranslation();
   const isLogsModalOpen = useChatStore((s) => s.isLogsModalOpen);
   const setLogsModalOpen = useChatStore((s) => s.setLogsModalOpen);
   const myCharacterName = useChatStore((s) => s.myCharacterName);
@@ -131,7 +133,7 @@ export function LogsViewer() {
     <View style={styles.absoluteContainer}>
       <View style={styles.header}>
         <Ionicons name="folder-open" size={24} color="#3498db" />
-        <Text style={styles.title}>Visor de Logs</Text>
+        <Text style={styles.title}>{t("logsViewer.title")}</Text>
         <TouchableOpacity onPress={() => setLogsModalOpen(false)}>
           <Ionicons name="close" size={28} color="#aaa" />
         </TouchableOpacity>
@@ -145,7 +147,7 @@ export function LogsViewer() {
           <Text style={styles.pickerText} numberOfLines={1}>
             {selectedTarget
               ? formatTargetName(selectedTarget)
-              : "Selecciona un chat..."}
+              : t("logsViewer.selectChat")}
           </Text>
           <Ionicons name="chevron-down" size={16} color="#aaa" />
         </TouchableOpacity>
@@ -172,7 +174,7 @@ export function LogsViewer() {
                       selectedDate === date && { color: "white" },
                     ]}
                   >
-                    {date === "All" ? "Todo" : date}
+                    {date === "All" ? t("logsViewer.allDates") : date}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -190,7 +192,7 @@ export function LogsViewer() {
             />
             <TextInput
               style={styles.searchInput}
-              placeholder="Buscar en la conversación..."
+              placeholder={t("logsViewer.searchPlaceholder")}
               placeholderTextColor="#888"
               value={searchText}
               onChangeText={setSearchText}
@@ -218,10 +220,10 @@ export function LogsViewer() {
           />
         ) : !selectedTarget ? (
           <Text style={styles.emptyText}>
-            Por favor, selecciona un chat para ver su historial.
+            {t("logsViewer.emptyNoTarget")}
           </Text>
         ) : filteredLogs.length === 0 ? (
-          <Text style={styles.emptyText}>No se encontraron resultados.</Text>
+          <Text style={styles.emptyText}>{t("logsViewer.emptyNoResults")}</Text>
         ) : (
           <FlatList
             data={filteredLogs}
@@ -290,7 +292,7 @@ export function LogsViewer() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Tus Conversaciones</Text>
+            <Text style={styles.modalTitle}>{t("logsViewer.modalTitle")}</Text>
             <FlatList
               data={targets}
               keyExtractor={(t) => t}
@@ -313,7 +315,7 @@ export function LogsViewer() {
               style={styles.closeModalBtn}
               onPress={() => setShowTargetPicker(false)}
             >
-              <Text style={styles.closeModalText}>Cancelar</Text>
+              <Text style={styles.closeModalText}>{t("logsViewer.cancelBtn")}</Text>
             </TouchableOpacity>
           </View>
         </View>

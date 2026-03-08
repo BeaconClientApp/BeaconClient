@@ -15,12 +15,14 @@ import {
   STATUS_OPTIONS,
   BBCODE_COLORS,
 } from "@/constants/theme";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   onClose: () => void;
 }
 
 export function StatusModal({ onClose }: Props) {
+  const { t } = useTranslation();
   const changeMyStatus = useChatStore((state) => state.changeMyStatus);
   const myCharacterName = useChatStore((state) => state.myCharacterName);
   const onlineCharacters = useChatStore((state) => state.onlineCharacters);
@@ -73,7 +75,7 @@ export function StatusModal({ onClose }: Props) {
       onPress={onClose}
     >
       <TouchableOpacity activeOpacity={1} style={styles.statusModalContent}>
-        <Text style={styles.statusModalTitle}>Actualizar Estado</Text>
+        <Text style={styles.statusModalTitle}>{t("statusModal.title")}</Text>
 
         <View style={styles.statusOptionsContainer}>
           {STATUS_OPTIONS.map((s) => (
@@ -99,7 +101,7 @@ export function StatusModal({ onClose }: Props) {
                   draftStatus === s && { color: getStatusColor(s) },
                 ]}
               >
-                {s.charAt(0).toUpperCase() + s.slice(1)}
+                {t(`statusModal.statuses.${s}`, { defaultValue: s.charAt(0).toUpperCase() + s.slice(1) })}
               </Text>
             </TouchableOpacity>
           ))}
@@ -198,7 +200,7 @@ export function StatusModal({ onClose }: Props) {
 
         <TextInput
           style={styles.statusMsgInput}
-          placeholder="Mensaje de estado (opcional)..."
+          placeholder={t("statusModal.placeholder")}
           placeholderTextColor="#666"
           value={draftStatusMsg}
           onChangeText={setDraftStatusMsg}
@@ -210,10 +212,10 @@ export function StatusModal({ onClose }: Props) {
 
         <View style={styles.modalActions}>
           <TouchableOpacity style={styles.cancelBtn} onPress={onClose}>
-            <Text style={styles.cancelBtnText}>Cancelar</Text>
+            <Text style={styles.cancelBtnText}>{t("statusModal.cancelBtn")}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.saveBtn} onPress={handleSaveStatus}>
-            <Text style={styles.saveBtnText}>Actualizar</Text>
+            <Text style={styles.saveBtnText}>{t("statusModal.updateBtn")}</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>

@@ -10,10 +10,12 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useChatStore, ChannelInfo } from "@/store/useChatStore";
+import { useTranslation } from "react-i18next";
 
 type ListType = "official" | "open";
 
 export function ChannelList() {
+  const { t } = useTranslation();
   const publicChannels = useChatStore((state) => state.publicChannels);
   const openRooms = useChatStore((state) => state.openRooms);
 
@@ -62,17 +64,17 @@ export function ChannelList() {
           <Text style={styles.channelName}>{displayName}</Text>
           <Text style={styles.channelMeta}>
             <Ionicons name="people" size={12} color="#888" /> {item.characters}{" "}
-            usuarios
+            {t("channelList.users")}
             {isOfficial && item.mode
-              ? ` • Modo: ${item.mode}`
-              : " • Sala Privada Abierta"}
+              ? t("channelList.mode", { mode: item.mode })
+              : t("channelList.openPrivateRoom")}
           </Text>
         </View>
         <TouchableOpacity
           style={styles.joinButton}
           onPress={() => joinChannel(item.name)}
         >
-          <Text style={styles.joinButtonText}>Entrar</Text>
+          <Text style={styles.joinButtonText}>{t("channelList.joinBtn")}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -83,7 +85,7 @@ export function ChannelList() {
       <View style={styles.header}>
         <TextInput
           style={styles.searchInput}
-          placeholder="Buscar canal o sala..."
+          placeholder={t("channelList.searchPlaceholder")}
           placeholderTextColor="#666"
           value={search}
           onChangeText={setSearch}
@@ -112,7 +114,7 @@ export function ChannelList() {
               listType === "official" && styles.activeTabText,
             ]}
           >
-            Oficiales
+            {t("channelList.tabOfficial")}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -125,7 +127,7 @@ export function ChannelList() {
               listType === "open" && styles.activeTabText,
             ]}
           >
-            Salas de Usuarios
+            {t("channelList.tabCustom")}
           </Text>
         </TouchableOpacity>
       </View>
@@ -136,8 +138,8 @@ export function ChannelList() {
           <Text style={{ color: "#888", marginTop: 10 }}>
             Cargando{" "}
             {listType === "official"
-              ? "canales oficiales"
-              : "salas de usuarios"}
+              ? t("channelList.loadingOfficial")
+              : t("channelList.loadingCustom")}
             ...
           </Text>
         </View>
@@ -152,7 +154,7 @@ export function ChannelList() {
           refreshing={isRefreshing}
           onRefresh={handleRefresh}
           ListEmptyComponent={
-            <Text style={styles.emptyText}>No se encontraron resultados.</Text>
+            <Text style={styles.emptyText}>{t("channelList.noResults")}</Text>
           }
         />
       )}

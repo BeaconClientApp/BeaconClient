@@ -13,8 +13,10 @@ import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useChatStore } from "@/store/useChatStore";
+import { useTranslation } from 'react-i18next';
 
 export function LoginScreen() {
+  const { t } = useTranslation();
   const [accountLocal, setAccountLocal] = useState("");
   const [passwordLocal, setPasswordLocal] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -82,7 +84,7 @@ export function LoginScreen() {
             fontWeight: "bold",
           }}
         >
-          Verificando sesión...
+          {t("login.verifying")}
         </Text>
       </View>
     );
@@ -96,7 +98,7 @@ export function LoginScreen() {
           style={styles.logo}
           resizeMode="contain"
         />
-        <Text style={styles.title}>Selecciona tu Personaje</Text>
+        <Text style={styles.title}>{t("login.selectCharacter")}</Text>
 
         {error && <Text style={styles.errorText}>{error}</Text>}
 
@@ -109,7 +111,7 @@ export function LoginScreen() {
           />
           <TextInput
             style={styles.searchInput}
-            placeholder="Buscar personaje..."
+            placeholder={t("login.searchPlaceholder")}
             placeholderTextColor="#888"
             value={searchQuery}
             onChangeText={setSearchQuery}
@@ -153,7 +155,7 @@ export function LoginScreen() {
           )}
           ListEmptyComponent={
             <Text style={{ color: "#888", textAlign: "center", marginTop: 20 }}>
-              No se encontraron personajes.
+              {t("login.noCharacters")}
             </Text>
           }
         />
@@ -163,7 +165,7 @@ export function LoginScreen() {
           onPress={logout}
           disabled={isConnectingToChat}
         >
-          <Text style={styles.buttonText}>Cerrar Sesión</Text>
+          <Text style={styles.buttonText}>{t("login.logoutBtn")}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -176,13 +178,13 @@ export function LoginScreen() {
         style={styles.logo}
         resizeMode="contain"
       />
-      <Text style={styles.title}>Iniciar Sesión en F-Chat</Text>
+      <Text style={styles.title}>{t("login.title")}</Text>
 
       {error && <Text style={styles.errorText}>{error}</Text>}
 
       <TextInput
         style={styles.input}
-        placeholder="Nombre de Cuenta"
+        placeholder={t("login.accountPlaceholder")}
         placeholderTextColor="#888"
         value={accountLocal}
         onChangeText={setAccountLocal}
@@ -190,7 +192,7 @@ export function LoginScreen() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Contraseña"
+        placeholder={t("login.passwordPlaceholder")}
         placeholderTextColor="#888"
         value={passwordLocal}
         onChangeText={setPasswordLocal}
@@ -206,7 +208,7 @@ export function LoginScreen() {
           size={24}
           color={rememberMe ? "#3498db" : "#888"}
         />
-        <Text style={styles.checkboxLabel}>Recordar credenciales</Text>
+        <Text style={styles.checkboxLabel}>{t("login.rememberMe")}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -217,7 +219,7 @@ export function LoginScreen() {
         {isLoading ? (
           <ActivityIndicator color="white" />
         ) : (
-          <Text style={styles.buttonText}>Entrar</Text>
+          <Text style={styles.buttonText}>{t("login.enterBtn")}</Text>
         )}
       </TouchableOpacity>
     </View>

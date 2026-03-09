@@ -13,6 +13,7 @@ import { useChatStore } from "@/store/useChatStore";
 import { BBCodeText } from "@/components/BBCodeText";
 import { useSettingsStore } from "@/store/useSettingsStore";
 import { getGenderColor, BBCODE_COLORS } from "@/constants/theme";
+import { useTranslation } from "react-i18next";
 
 const formatTime = (ts?: number) => {
   if (!ts) return "";
@@ -38,6 +39,7 @@ const DEFAULT_ROOM_SETTINGS = {
 };
 
 export function RoomChat() {
+  const { t } = useTranslation();
   const activeChat = useChatStore((state) => state.activeChat!);
   const joinedChannels = useChatStore((state) => state.joinedChannels);
   const sendChannelMessage = useChatStore((state) => state.sendChannelMessage);
@@ -127,7 +129,7 @@ export function RoomChat() {
   if (!room)
     return (
       <View style={styles.container}>
-        <Text style={{ color: "white" }}>Cargando sala...</Text>
+        <Text style={{ color: "white" }}>{t("roomChat.loadingRoom")}</Text>
       </View>
     );
 
@@ -223,7 +225,7 @@ export function RoomChat() {
           onPress={() => setShowDesc(true)}
         >
           <Ionicons name="document-text" size={14} color="#aaa" />
-          <Text style={styles.toolBtnText}>Sala</Text>
+          <Text style={styles.toolBtnText}>{t("roomChat.tools.room")}</Text>
         </TouchableOpacity>
         <View style={styles.toolDivider} />
         <TouchableOpacity
@@ -231,7 +233,7 @@ export function RoomChat() {
           onPress={() => setShowSettingsModal(true)}
         >
           <Ionicons name="settings" size={14} color="#aaa" />
-          <Text style={styles.toolBtnText}>Alertas</Text>
+          <Text style={styles.toolBtnText}>{t("roomChat.tools.alerts")}</Text>
         </TouchableOpacity>
         <View style={styles.toolDivider} />
         <TouchableOpacity
@@ -239,7 +241,9 @@ export function RoomChat() {
           onPress={() => useChatStore.getState().openLogs(activeChat)}
         >
           <Ionicons name="folder-open" size={14} color="#f1c40f" />
-          <Text style={[styles.toolBtnText, { color: "#f1c40f" }]}>Logs</Text>
+          <Text style={[styles.toolBtnText, { color: "#f1c40f" }]}>
+            {t("roomChat.tools.logs")}
+          </Text>
         </TouchableOpacity>
         <View style={styles.toolDivider} />
         <TouchableOpacity
@@ -248,7 +252,7 @@ export function RoomChat() {
         >
           <Ionicons name="alert-circle" size={14} color="#ff4757" />
           <Text style={[styles.toolBtnText, { color: "#ff4757" }]}>
-            Reportar
+            {t("roomChat.tools.report")}
           </Text>
         </TouchableOpacity>
       </View>
@@ -268,7 +272,7 @@ export function RoomChat() {
                 filterMode === "both" && styles.filterTextActive,
               ]}
             >
-              Ambos
+              {t("roomChat.filters.both")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -284,7 +288,7 @@ export function RoomChat() {
                 filterMode === "chat" && styles.filterTextActive,
               ]}
             >
-              Solo Chat
+              {t("roomChat.filters.chatOnly")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -300,7 +304,7 @@ export function RoomChat() {
                 filterMode === "ads" && styles.filterTextActive,
               ]}
             >
-              Solo Ads
+              {t("roomChat.filters.adsOnly")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -428,7 +432,7 @@ export function RoomChat() {
                   inputType === "chat" && styles.inputTypeTextActive,
                 ]}
               >
-                💬 Enviar Chat
+                {t("roomChat.inputType.chat")}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -444,7 +448,7 @@ export function RoomChat() {
                   inputType === "ad" && styles.inputTypeTextActive,
                 ]}
               >
-                🎭 Enviar Ad
+                {t("roomChat.inputType.ad")}
               </Text>
             </TouchableOpacity>
           </View>
@@ -608,8 +612,8 @@ export function RoomChat() {
             }
             placeholder={
               inputType === "chat"
-                ? "Escribe un mensaje..."
-                : "Redacta tu Anuncio de Rol..."
+                ? t("roomChat.placeholders.chat")
+                : t("roomChat.placeholders.ad")
             }
             placeholderTextColor="#888"
             multiline
@@ -634,7 +638,9 @@ export function RoomChat() {
                 textAlign: "center",
               }}
             >
-              {isAdCooldownActive ? formatCooldown(adCooldown) : "ENVIAR"}
+              {isAdCooldownActive
+                ? formatCooldown(adCooldown)
+                : t("roomChat.sendBtn")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -648,7 +654,9 @@ export function RoomChat() {
         >
           <TouchableOpacity activeOpacity={1} style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Ajustes de Notificación</Text>
+              <Text style={styles.modalTitle}>
+                {t("roomChat.modals.settings.title")}
+              </Text>
               <TouchableOpacity onPress={() => setShowSettingsModal(false)}>
                 <Ionicons name="close" size={28} color="#aaa" />
               </TouchableOpacity>
@@ -664,7 +672,7 @@ export function RoomChat() {
                   color={draftNotifyAll ? "#3498db" : "#888"}
                 />
                 <Text style={styles.checkboxLabel}>
-                  Notificar todos los mensajes de chat (No Ads)
+                  {t("roomChat.modals.settings.notifyAll")}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -677,17 +685,17 @@ export function RoomChat() {
                   color={draftNotifyName ? "#3498db" : "#888"}
                 />
                 <Text style={styles.checkboxLabel}>
-                  Notificar si mencionan mi nombre
+                  {t("roomChat.modals.settings.notifyName")}
                 </Text>
               </TouchableOpacity>
               <Text style={{ color: "#aaa", marginTop: 15, marginBottom: 5 }}>
-                Palabras a resaltar (separadas por coma):
+                {t("roomChat.modals.settings.highlightWords")}
               </Text>
               <TextInput
                 style={[styles.chatInput, { maxHeight: 80, marginBottom: 15 }]}
                 value={draftHighlightWords}
                 onChangeText={setDraftHighlightWords}
-                placeholder="ej: rol, trama, aventura"
+                placeholder={t("roomChat.modals.settings.highlightPlaceholder")}
                 placeholderTextColor="#555"
               />
               <TouchableOpacity
@@ -701,7 +709,7 @@ export function RoomChat() {
                     textAlign: "center",
                   }}
                 >
-                  GUARDAR AJUSTES
+                  {t("roomChat.modals.settings.saveBtn")}
                 </Text>
               </TouchableOpacity>
             </ScrollView>
@@ -717,7 +725,7 @@ export function RoomChat() {
         >
           <TouchableOpacity activeOpacity={1} style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Comandos de F-Chat</Text>
+              <Text style={styles.modalTitle}>{t("chat.helpModal.title")}</Text>
               <TouchableOpacity onPress={() => setShowHelpModal(false)}>
                 <Ionicons name="close" size={28} color="#aaa" />
               </TouchableOpacity>
@@ -725,54 +733,67 @@ export function RoomChat() {
             <ScrollView style={styles.modalScroll}>
               <Text style={styles.helpText}>
                 <Text style={{ color: "#f39c12", fontWeight: "bold" }}>
-                  COMANDOS GENERALES
+                  {t("chat.helpModal.general")}
                 </Text>
                 {"\n"}
-                <Text style={styles.helpCmd}>/clear</Text> - Limpia los mensajes
-                del canal actual.{"\n"}
-                <Text style={styles.helpCmd}>/clearall</Text> - Limpia los
-                mensajes en TODAS las pestañas.{"\n"}
-                <Text style={styles.helpCmd}>/uptime</Text> - Muestra el tiempo
-                de actividad del servidor.{"\n"}
-                <Text style={styles.helpCmd}>/ignore [nombre]</Text> - Bloquea a
-                un usuario.{"\n"}
-                <Text style={styles.helpCmd}>/unignore [nombre]</Text> -
-                Desbloquea a un usuario.{"\n"}
-                <Text style={styles.helpCmd}>/ignorelist</Text> - Muestra a
-                todos los usuarios que has ignorado.{"\n"}
-                <Text style={styles.helpCmd}>/status [estado] [msj]</Text> -
-                online, looking, busy, dnd, idle, away.{"\n"}
-                <Text style={styles.helpCmd}>/reward [nombre]</Text> - Da una
-                recompensa (Crown).{"\n\n"}
-                <Text style={{ color: "#3498db", fontWeight: "bold" }}>
-                  NAVEGACIÓN
-                </Text>
+                <Text style={styles.helpCmd}>/clear</Text>{" "}
+                {t("chat.helpModal.clear")}
                 {"\n"}
-                <Text style={styles.helpCmd}>/join [sala]</Text> - Únete a un
-                canal público o ID.{"\n"}
-                <Text style={styles.helpCmd}>/leave</Text> o{" "}
-                <Text style={styles.helpCmd}>/close</Text> - Cierra la pestaña
-                actual.{"\n"}
-                <Text style={styles.helpCmd}>/priv [nombre]</Text> - Abre un
-                chat privado con el personaje.{"\n"}
-                <Text style={styles.helpCmd}>/channels</Text> - Abre la lista de
-                canales públicos.{"\n"}
-                <Text style={styles.helpCmd}>/prooms</Text> - Abre la lista de
-                canales privados abiertos.{"\n\n"}
-                <Text style={{ color: "#2ecc71", fontWeight: "bold" }}>
-                  INTERACCIÓN
-                </Text>
+                <Text style={styles.helpCmd}>/clearall</Text>{" "}
+                {t("chat.helpModal.clearall")}
                 {"\n"}
-                <Text style={styles.helpCmd}>/me [acción]</Text> - O /me&apos;s
-                para rol en 3ra persona.{"\n"}
-                <Text style={styles.helpCmd}>/ad [mensaje]</Text> - Envía un Ad.
+                <Text style={styles.helpCmd}>/uptime</Text>{" "}
+                {t("chat.helpModal.uptime")}
                 {"\n"}
-                <Text style={styles.helpCmd}>/code</Text> - Copia el BBCode de
-                la sala.{"\n"}
-                <Text style={styles.helpCmd}>/roll [dados]</Text> - Tira dados
-                (ej: /roll 1d20+5).{"\n"}
-                <Text style={styles.helpCmd}>/bottle</Text> - Gira la botella.
+                <Text style={styles.helpCmd}>/ignore [nombre]</Text>{" "}
+                {t("chat.helpModal.ignore")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/unignore [nombre]</Text>{" "}
+                {t("chat.helpModal.unignore")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/ignorelist</Text>{" "}
+                {t("chat.helpModal.ignorelist")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/status [estado] [msj]</Text>{" "}
+                {t("chat.helpModal.status")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/reward [nombre]</Text>{" "}
+                {t("chat.helpModal.reward")}
                 {"\n\n"}
+                <Text style={{ color: "#3498db", fontWeight: "bold" }}>
+                  {t("chat.helpModal.navigation")}
+                </Text>
+                {"\n"}
+                <Text style={styles.helpCmd}>/join [sala]</Text>{" "}
+                {t("chat.helpModal.join")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/leave</Text>{" "}
+                {t("chat.helpModal.leave")}{" "}
+                <Text style={styles.helpCmd}>/close</Text>{" "}
+                {t("chat.helpModal.leaveDesc")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/priv [nombre]</Text>{" "}
+                {t("chat.helpModal.priv")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/channels</Text>{" "}
+                {t("chat.helpModal.channels")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/prooms</Text>{" "}
+                {t("chat.helpModal.prooms")}
+                {"\n\n"}
+                <Text style={{ color: "#2ecc71", fontWeight: "bold" }}>
+                  {t("chat.helpModal.interaction")}
+                </Text>
+                {"\n"}
+                <Text style={styles.helpCmd}>/me [acción]</Text>{" "}
+                {t("chat.helpModal.me")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/ad [mensaje]</Text>{" "}
+                {t("chat.helpModal.ad")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/roll [dados]</Text>{" "}
+                {t("chat.helpModal.roll")}
+                {"\n"}
               </Text>
             </ScrollView>
           </TouchableOpacity>
@@ -790,7 +811,7 @@ export function RoomChat() {
             style={[styles.modalContent, { maxHeight: "60%" }]}
           >
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Vista Previa</Text>
+              <Text style={styles.modalTitle}>{t("chat.previewModal.title")}</Text>
               <TouchableOpacity onPress={() => setShowPreviewModal(false)}>
                 <Ionicons name="close" size={28} color="#aaa" />
               </TouchableOpacity>
@@ -813,7 +834,7 @@ export function RoomChat() {
                 >
                   <BBCodeText
                     text={
-                      inputText || "Escribe algo para ver la vista previa..."
+                      inputText || t("chat.previewModal.empty")
                     }
                   />
                 </Text>
@@ -831,7 +852,7 @@ export function RoomChat() {
         >
           <TouchableOpacity activeOpacity={1} style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Descripción</Text>
+              <Text style={styles.modalTitle}>{t("roomChat.modals.description.title")}</Text>
               <TouchableOpacity onPress={() => setShowDesc(false)}>
                 <Ionicons name="close" size={28} color="#aaa" />
               </TouchableOpacity>
@@ -843,7 +864,7 @@ export function RoomChat() {
                 {room.description ? (
                   <BBCodeText text={room.description} />
                 ) : (
-                  "Sin descripción."
+                  t("roomChat.modals.description.empty")
                 )}
               </Text>
             </ScrollView>
@@ -863,18 +884,18 @@ export function RoomChat() {
           >
             <View style={styles.modalHeader}>
               <Text style={[styles.modalTitle, { color: "#ff4757" }]}>
-                🚨 Alertar al Staff Global
+                {t("roomChat.modals.report.title")}
               </Text>
               <TouchableOpacity onPress={() => setShowAlert(false)}>
                 <Ionicons name="close" size={28} color="#aaa" />
               </TouchableOpacity>
             </View>
             <Text style={styles.warningText}>
-              ATENCIÓN: Esto enviará una alerta real.
+              {t("roomChat.modals.report.warning")}
             </Text>
             <TextInput
               style={styles.alertInput}
-              placeholder="Describe el problema..."
+              placeholder={t("roomChat.modals.report.placeholder")}
               placeholderTextColor="#666"
               value={alertText}
               onChangeText={setAlertText}
@@ -895,7 +916,7 @@ export function RoomChat() {
                   textAlign: "center",
                 }}
               >
-                ENVIAR ALERTA
+                {t("roomChat.modals.report.submitBtn")}
               </Text>
             </TouchableOpacity>
           </TouchableOpacity>

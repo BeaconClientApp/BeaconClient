@@ -1,5 +1,6 @@
 import * as Clipboard from 'expo-clipboard';
 import { useChatStore, safeWsSend } from '@/store/useChatStore';
+import i18n from '@/i18n';
 
 export const processChatCommand = (channelId: string, text: string, isRoom: boolean): boolean => {
     const textTrimmed = text.trim();
@@ -49,7 +50,7 @@ export const processChatCommand = (channelId: string, text: string, isRoom: bool
             if (args) toggleIgnore(args);
             return true;
         case 'ignorelist':
-            addConsoleLog(`🚫 Lista de Ignorados: ${ignoredUsers.join(', ') || 'Ninguno'}`);
+            addConsoleLog(i18n.t("chatCommands.ignoreList", { users: ignoredUsers.join(', ') || i18n.t("chatCommands.none") }));
             return true;
         case 'reward':
             if (args && ws) send(`RWD ${JSON.stringify({ character: args })}`);
@@ -63,7 +64,7 @@ export const processChatCommand = (channelId: string, text: string, isRoom: bool
                 const statusName = (statusParts[0] || 'online').toLowerCase();
                 const statusMsg = statusParts.slice(1).join(' ');
                 if (['online', 'looking', 'busy', 'dnd', 'idle', 'away', 'crown'].includes(statusName)) send(`STA ${JSON.stringify({ status: statusName, statusmsg: statusMsg })}`);
-                else addConsoleLog(`⚠️ Estado inválido. Usa: online, looking, busy, dnd, idle, away.`);
+                else addConsoleLog(i18n.t("chatCommands.invalidStatus"));
             }
             return true;
         case 'makeroom':
@@ -109,7 +110,9 @@ export const processChatCommand = (channelId: string, text: string, isRoom: bool
             if (args && ws && isRoom) send(`CDS ${JSON.stringify({ channel: channelId, description: args })}`);
             return true;
         case 'getdescription':
-            if (isRoom) addConsoleLog(`📝 Descripción de la Sala:\n${joinedChannels[channelId]?.description || 'Ninguna'}`);
+            if (isRoom) {
+                addConsoleLog(i18n.t("chatCommands.roomDescription", { desc: joinedChannels[channelId]?.description || i18n.t("chatCommands.none") }));
+            }
             return true;
         case 'timeout':
             if (args && ws && isRoom) {
@@ -140,7 +143,7 @@ export const processChatCommand = (channelId: string, text: string, isRoom: bool
                     };
                 }
             });
-            setSystemNotice("🧹 Chat limpiado"); return true;
+            setSystemNotice(i18n.t("chatCommands.chatCleared")); 
         case 'clearall':
             useChatStore.setState((state) => {
                 const clearedRooms = { ...state.joinedChannels };
@@ -149,11 +152,12 @@ export const processChatCommand = (channelId: string, text: string, isRoom: bool
                     joinedChannels: clearedRooms, privateMessages: {}
                 };
             });
-            setSystemNotice("🧹 Todos los chats limpiados"); return true;
+            setSystemNotice(i18n.t("chatCommands.allChatsCleared")); 
         case 'code':
             if (isRoom) {
                 const codeStr = `[session=${joinedChannels[channelId]?.title}]${channelId}[/session]`;
-                Clipboard.setStringAsync(codeStr).catch(() => { }); setSystemNotice("🔗 Código copiado al portapapeles");
+                Clipboard.setStringAsync(codeStr).catch(() => { }); 
+                setSystemNotice(i18n.t("chatCommands.codeCopied"));
             }
             return true;
         case 'gkick':
@@ -190,16 +194,16 @@ export const processChatCommand = (channelId: string, text: string, isRoom: bool
             if (args && ws) send(`RLD ${JSON.stringify({ save: args })}`);
             return true;
         case 'preview':
-            setSystemNotice("👁️ Usa el botón del ojo en la barra inferior.");
+            setSystemNotice(i18n.t("chatCommands.usePreviewBtn"));
             return true;
         case 'who':
-            setSystemNotice("👥 Usa el menú derecho para ver los miembros.");
+            setSystemNotice(i18n.t("chatCommands.useRightMenuMembers"));
             return true;
         case 'users':
-            setSystemNotice("👥 Usa el menú derecho para ver a tus amigos.");
+            setSystemNotice(i18n.t("chatCommands.useRightMenuFriends"));
             return true;
         default:
-            addConsoleLog(`⚠️ Comando desconocido o no implementado: /${cmd}`);
+            addConsoleLog(i18n.t("chatCommands.unknownCommand", { cmd }));
             return true;
     }
 };

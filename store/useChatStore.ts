@@ -7,6 +7,7 @@ import { Audio } from 'expo-av';
 import { useSettingsStore } from './useSettingsStore';
 import { useAuthStore } from './useAuthStore';
 import { processChatCommand } from '@/utils/chatCommands';
+import i18n from '@/i18n';
 
 export interface ChatMessage {
     from: string;
@@ -423,7 +424,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
             ws.close();
         }
         if (!account || !passwordInSession) {
-            useAuthStore.getState().setError("Tu sesión expiró. Cierra sesión y vuelve a ingresar.");
+            useAuthStore.getState().setError(i18n.t("chatStore.errors.sessionExpired"));
             return;
         }
 
@@ -482,7 +483,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
                     ticket: data.ticket,
                     character: characterName,
                     cname: 'Beacon Client',
-                    cversion: '0.1.0-alpha'
+                    cversion: '0.2.0-alpha'
                 })}`);
             };
 
@@ -503,7 +504,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
                 switch (command) {
                     case 'IDN':
-                        addConsoleLog("✅ Conexión exitosa.");
+                        addConsoleLog(i18n.t("chatStore.console.connectionSuccess"));
                         set({ isWsConnected: true, isConnectingToChat: false });
                         playAppSound('login');
                         get().pinnedRooms.forEach(room =>
@@ -512,7 +513,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
                         break;
                     case 'ERR':
                         if ([2, 3, 4, 9, 30, 31, 32, 62].includes(data.number)) {
-                            useAuthStore.getState().setError(`Atención: ${data.message}`);
+                            useAuthStore.getState().setError(i18n.t("chatStore.errors.attention", { message: data.message }));
                             set({ isConnectingToChat: false, pendingJoin: null });
                             newWs.close();
                         }
@@ -521,16 +522,16 @@ export const useChatStore = create<ChatState>((set, get) => ({
                                 const existingId = Object.keys(get().joinedChannels).find(id => id.toLowerCase() === get().pendingJoin?.toLowerCase());
                                 set({ activeChat: existingId || get().pendingJoin, pendingJoin: null, activeTab: 'channels' });
                             } else {
-                                addConsoleLog(`⚠️ Error: ${data.message}`);
+                                addConsoleLog(i18n.t("chatStore.errors.errorPrefix", { message: data.message }));
                                 get().setSystemNotice(data.message);
                                 set({ pendingJoin: null });
                             }
                         } break;
                     case 'HLO':
-                        addConsoleLog(`👋 ${data.message || "¡Hola!"}`);
+                        addConsoleLog(i18n.t("chatStore.console.hello", { message: data.message || i18n.t("chatStore.console.helloDefault") }));
                         break;
                     case 'CON':
-                        addConsoleLog(`📊 Hay ${data.count} usuarios conectados.`);
+                        addConsoleLog(i18n.t("chatStore.console.usersConnected", { count: data.count }));
                         break;
                     case 'PIN':
                         newWs.send('PIN');
@@ -555,7 +556,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
                         });
                         break;
                     case 'NLN':
-                        if (isBookmarked(data.identity)) addConsoleLog(`✨ [user]${data.identity}[/user] se ha conectado.`);
+                        if (isBookmarked(data.identity)) addConsoleLog(i18n.t("chatStore.console.userConnected", { user: data.identity }));
                         set((state) => ({
                             onlineCharacters: {
                                 ...state.onlineCharacters, [data.identity]: {
@@ -567,7 +568,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
                         }));
                         break;
                     case 'STA':
-                        if (isBookmarked(data.character)) addConsoleLog(`📍 [user]${data.character}[/user] cambió a ${data.status}`);
+                        if (isBookmarked(data.character)) addConsoleLog(i18n.t("chatStore.console.statusChanged", { user: data.character, status: data.status }));
                         set((state) => {
                             const char = state.onlineCharacters[data.character] || {
                                 gender: "None",
@@ -586,7 +587,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
                         });
                         break;
                     case 'FLN':
-                        if (isBookmarked(data.character)) addConsoleLog(`👣 [user]${data.character}[/user] se ha desconectado.`);
+                        if (isBookmarked(data.character)) addConsoleLog(i18n.t("chatStore.console.userDisconnected", { user: data.character }));
                         set((state) => {
                             const newOnline = { ...state.onlineCharacters };
                             delete newOnline[data.character];
@@ -605,12 +606,12 @@ export const useChatStore = create<ChatState>((set, get) => ({
                         });
                         break;
                     case 'CIU':
-                        addConsoleLog(`💌 [user]${data.sender}[/user] te invitó a la sala: [session=${data.title}]${data.name}[/session]`);
+                        addConsoleLog(i18n.t("chatStore.console.invitedToRoom", { sender: data.sender, title: data.title, room: data.name }));
                         break;
                     case 'CBU':
                     case 'CKU':
                     case 'CTU':
-                        addConsoleLog(`🛡️ Mod: [user]${data.operator}[/user] sancionó a [user]${data.character}[/user] en ${data.channel}.`);
+                        addConsoleLog(i18n.t("chatStore.console.modSanction", { operator: data.operator, user: data.character, channel: data.channel }));
                         break;
                     case 'CHA':
                         set({ publicChannels: (data.channels || []).sort((a: any, b: any) => b.characters - a.characters) });
@@ -647,7 +648,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
                             if (!isDnd && AppState.currentState.match(/inactive|background/)) {
                                 Notifications.scheduleNotificationAsync({
                                     content: {
-                                        title: `💬 Mensaje de ${sender}`,
+                                        title: i18n.t("chatStore.notifications.privateMessageTitle", { sender }),
                                         body: data.message,
                                         sound: true,
                                     },
@@ -824,8 +825,8 @@ export const useChatStore = create<ChatState>((set, get) => ({
                                         if (!isDnd && AppState.currentState.match(/inactive|background/)) {
                                             Notifications.scheduleNotificationAsync({
                                                 content: {
-                                                    title: `💬 Notificación en ${room.title}`,
-                                                    body: `Mensaje de ${data.character}`, sound: true
+                                                    title: i18n.t("chatStore.notifications.roomMessageTitle", { room: room.title }),
+                                                    body: i18n.t("chatStore.notifications.roomMessageBody", { sender: data.character }), 
                                                 },
                                                 trigger: null
                                             });
@@ -840,13 +841,13 @@ export const useChatStore = create<ChatState>((set, get) => ({
                         });
                         break;
                     case 'SYS':
-                        addConsoleLog(`⚙️ Sistema: ${data.message}`);
+                        addConsoleLog(i18n.t("chatStore.console.systemMessage", { message: data.message }));
                         break;
                     case 'BRO':
-                        addConsoleLog(`📢 BROADCAST: ${data.message}`);
+                        addConsoleLog(i18n.t("chatStore.console.broadcast", { message: data.message }));
                         break;
                     case 'VAR':
-                        addConsoleLog(`🎛️ Configuración del servidor cargada: ${data.variable}`);
+                        addConsoleLog(i18n.t("chatStore.console.serverConfigLoaded", { variable: data.variable }));
                         break;
                     case 'RLL':
                         if (data.channel) {
@@ -889,8 +890,8 @@ export const useChatStore = create<ChatState>((set, get) => ({
                                         if (!isDnd && AppState.currentState.match(/inactive|background/)) {
                                             Notifications.scheduleNotificationAsync({
                                                 content: {
-                                                    title: `🎲 Alerta en ${room.title}`,
-                                                    body: `Alguien tiró los dados/botella y te mencionó.`,
+                                                    title: i18n.t("chatStore.notifications.diceAlertTitle", { room: room.title }),
+                                                    body: i18n.t("chatStore.notifications.diceAlertBody"),
                                                     sound: true
                                                 },
                                                 trigger: null
@@ -911,10 +912,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
                         }
                         break;
                     case 'RTB':
-                        addConsoleLog(`🔔 Notificación Web: Tienes un nuevo evento tipo '${data.type}'.`);
+                        addConsoleLog(i18n.t("chatStore.console.webNotification", { type: data.type }));
                         break;
                     case 'UPT':
-                        addConsoleLog(`⏱️ Uptime del Servidor: Empezó el ${data.startstring} | Usuarios On: ${data.users} (Pico: ${data.maxusers}) | Canales: ${data.channels} | Conexiones: ${data.accepted}`);
+                        addConsoleLog(i18n.t("chatStore.console.uptime", { start: data.startstring, users: data.users, max: data.maxusers, channels: data.channels, accepted: data.accepted }));
                         break;
                     case 'IGN':
                         if (data.action === 'init') {
@@ -933,13 +934,13 @@ export const useChatStore = create<ChatState>((set, get) => ({
                     case 'PRD':
                         break;
                     default:
-                        addConsoleLog(`❓ Comando desconocido: ${command}`);
+                        addConsoleLog(i18n.t("chatStore.console.unknownCommand", { command }));
                         break;
                 }
             };
             newWs.onerror = () => {
                 set({ isConnectingToChat: false });
-                useAuthStore.getState().setError("Error de red en WebSocket.");
+                useAuthStore.getState().setError(i18n.t("chatStore.errors.wsNetworkError"));
             };
             newWs.onclose = () => {
                 if (get().myCharacterName) {
@@ -953,7 +954,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
             set({ ws: newWs });
         } catch (err) {
             console.log(err);
-            useAuthStore.getState().setError("Error al pedir ticket al servidor.");
+            useAuthStore.getState().setError(i18n.t("chatStore.errors.ticketError"));
             set({ isConnectingToChat: false });
         }
     },
@@ -1038,8 +1039,8 @@ export const useChatStore = create<ChatState>((set, get) => ({
         if (!ws) return;
         safeWsSend(ws, `SFC ${JSON.stringify({
             action: "report",
-            report: `[Alerta desde Sala: ${channel}] ${report}`,
-            character: ""
+            report: i18n.t("chatStore.reports.roomAlert", { channel, report }),
+            character: "" 
         })}`);
     },
     sendTyping: (character, status) => {
@@ -1116,15 +1117,19 @@ export const useChatStore = create<ChatState>((set, get) => ({
                 body: formData.toString()
             });
             const data = await response.json();
-            if (data.error) alert("Hubo un error al guardar el memo: " + data.error);
+            if (data.error) alert(i18n.t("chatStore.errors.memoSaveError", { error: data.error }));
         } catch {
-            alert("No se pudo conectar con el servidor.");
+            alert(i18n.t("chatStore.errors.serverConnectionError"));
         }
     },
     reportUser: (character, reason) => {
         const { ws } = get();
         if (ws && ws.readyState === WebSocket.OPEN) {
-            safeWsSend(ws, `SFC {"action":"report","call":"Reporte contra ${character}: ${reason}"}`);
+            safeWsSend(ws, `SFC ${JSON.stringify({ 
+                action: "report", 
+                report: i18n.t("chatStore.reports.userReport", { character, reason }), 
+                character: character
+            })}`);
         }
     },
 }));

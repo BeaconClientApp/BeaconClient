@@ -10,12 +10,17 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import notifee from "@notifee/react-native";
 import { useSettingsStore } from "@/store/useSettingsStore";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   onClose: () => void;
 }
 
 export function GlobalSettingsModal({ onClose }: Props) {
+  const { t, i18n } = useTranslation();
+  const changeLanguage = (lang: "en" | "es") => {
+    i18n.changeLanguage(lang);
+  };
   const globalSettings = useSettingsStore((state) => state.globalSettings);
   const updateGlobalSettings = useSettingsStore(
     (state) => state.updateGlobalSettings,
@@ -35,18 +40,14 @@ export function GlobalSettingsModal({ onClose }: Props) {
     try {
       const isOptimized = await notifee.isBatteryOptimizationEnabled();
       if (isOptimized) {
-        alert(
-          "Tu teléfono tiene activada la 'Optimización de Batería' para esta app. Se abrirán los Ajustes: busca F-Chat y selecciona 'No Restringido' (Unrestricted) para evitar que se desconecte en segundo plano.",
-        );
+        alert(t("settings.alerts.batteryOptEnabled"));
         await notifee.openBatteryOptimizationSettings();
       } else {
-        alert(
-          "¡Perfecto! El sistema ya no tiene permitido desconectar tu app en segundo plano.",
-        );
+        alert(t("settings.alerts.batteryOptDisabled"));
       }
     } catch (e) {
       console.log(e);
-      alert("No se pudieron abrir los ajustes de batería automáticamente.");
+      alert(t("settings.alerts.batteryOptError"));
     }
   };
 
@@ -58,14 +59,44 @@ export function GlobalSettingsModal({ onClose }: Props) {
     >
       <TouchableOpacity activeOpacity={1} style={styles.settingsModalContent}>
         <View style={styles.settingsHeader}>
-          <Text style={styles.settingsTitle}>Ajustes Globales</Text>
+          <Text style={styles.settingsTitle}>{t("settings.title")}</Text>
           <TouchableOpacity onPress={onClose}>
             <Ionicons name="close" size={28} color="#aaa" />
           </TouchableOpacity>
         </View>
 
         <ScrollView style={styles.settingsScroll}>
-          <Text style={styles.settingsCategory}>Interfaz y Chat</Text>
+          <Text style={styles.settingsCategory}>
+            {t("settings.categories.interface")}
+          </Text>
+          <Text style={styles.settingsLabel}>{t("settings.language")}:</Text>
+          <View style={styles.languageSelectorContainer}>
+            {[
+              { code: "en", label: "English" },
+              { code: "es", label: "Español" },
+            ].map((lang) => {
+              const isActive = i18n.language?.startsWith(lang.code);
+              return (
+                <TouchableOpacity
+                  key={lang.code}
+                  style={[
+                    styles.languageBtn,
+                    isActive && styles.languageBtnActive,
+                  ]}
+                  onPress={() => changeLanguage(lang.code as "en" | "es")}
+                >
+                  <Text
+                    style={[
+                      styles.languageBtnText,
+                      isActive && styles.languageBtnTextActive,
+                    ]}
+                  >
+                    {lang.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
           <TouchableOpacity
             style={styles.checkboxContainer}
             onPress={() =>
@@ -81,7 +112,7 @@ export function GlobalSettingsModal({ onClose }: Props) {
               color={draftSettings.sendOnEnter ? "#3498db" : "#888"}
             />
             <Text style={styles.checkboxLabel}>
-              Enviar mensajes con la tecla Enter
+              {t("settings.labels.sendOnEnter")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -101,10 +132,12 @@ export function GlobalSettingsModal({ onClose }: Props) {
               color={draftSettings.showAvatarsInPM ? "#3498db" : "#888"}
             />
             <Text style={styles.checkboxLabel}>
-              Mostrar Avatares en la lista izquierda
+              {t("settings.labels.showAvatars")}
             </Text>
           </TouchableOpacity>
-          <Text style={styles.settingsLabel}>Tamaño de Letra (Píxeles):</Text>
+          <Text style={styles.settingsLabel}>
+            {t("settings.labels.fontSize")}
+          </Text>
           <TextInput
             style={styles.settingsInput}
             keyboardType="numeric"
@@ -118,7 +151,9 @@ export function GlobalSettingsModal({ onClose }: Props) {
           />
 
           <View style={styles.divider} />
-          <Text style={styles.settingsCategory}>Notificaciones y Alertas</Text>
+          <Text style={styles.settingsCategory}>
+            {t("settings.categories.notifications")}
+          </Text>
           <TouchableOpacity
             style={styles.checkboxContainer}
             onPress={() =>
@@ -133,7 +168,9 @@ export function GlobalSettingsModal({ onClose }: Props) {
               size={24}
               color={draftSettings.playSounds ? "#3498db" : "#888"}
             />
-            <Text style={styles.checkboxLabel}>Reproducir sonidos</Text>
+            <Text style={styles.checkboxLabel}>
+              {t("settings.labels.playSounds")}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.checkboxContainer}
@@ -149,7 +186,9 @@ export function GlobalSettingsModal({ onClose }: Props) {
               size={24}
               color={draftSettings.vibrate ? "#3498db" : "#888"}
             />
-            <Text style={styles.checkboxLabel}>Vibrar al recibir mensajes</Text>
+            <Text style={styles.checkboxLabel}>
+              {t("settings.labels.vibrate")}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.checkboxContainer}
@@ -166,11 +205,11 @@ export function GlobalSettingsModal({ onClose }: Props) {
               color={draftSettings.notifyOnName ? "#3498db" : "#888"}
             />
             <Text style={styles.checkboxLabel}>
-              Notificar si mencionan mi nombre (Todas las salas)
+              {t("settings.labels.notifyOnName")}
             </Text>
           </TouchableOpacity>
           <Text style={styles.settingsLabel}>
-            Palabras a resaltar (separadas por coma):
+            {t("settings.labels.highlightWords")}
           </Text>
           <TextInput
             style={styles.settingsInput}
@@ -178,12 +217,14 @@ export function GlobalSettingsModal({ onClose }: Props) {
             onChangeText={(t) =>
               setDraftSettings({ ...draftSettings, globalHighlightWords: t })
             }
-            placeholder="ej: rol, trama, aventura"
+            placeholder={t("settings.labels.highlightPlaceholder")}
             placeholderTextColor="#555"
           />
 
           <View style={styles.divider} />
-          <Text style={styles.settingsCategory}>Historial e Inactividad</Text>
+          <Text style={styles.settingsCategory}>
+            {t("settings.categories.history")}
+          </Text>
           <TouchableOpacity
             style={styles.checkboxContainer}
             onPress={() =>
@@ -198,7 +239,9 @@ export function GlobalSettingsModal({ onClose }: Props) {
               size={24}
               color={draftSettings.logMessages ? "#3498db" : "#888"}
             />
-            <Text style={styles.checkboxLabel}>Guardar Historial (Logs)</Text>
+            <Text style={styles.checkboxLabel}>
+              {t("settings.labels.logMessages")}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.checkboxContainer}
@@ -215,11 +258,11 @@ export function GlobalSettingsModal({ onClose }: Props) {
               color={draftSettings.logAds ? "#3498db" : "#888"}
             />
             <Text style={styles.checkboxLabel}>
-              Guardar Ads en el Historial
+              {t("settings.labels.logAds")}
             </Text>
           </TouchableOpacity>
           <Text style={styles.settingsLabel}>
-            Auto-Idle Timer (Minutos | 0 para desactivar):
+            {t("settings.labels.idleTimer")}
           </Text>
           <TextInput
             style={styles.settingsInput}
@@ -234,7 +277,9 @@ export function GlobalSettingsModal({ onClose }: Props) {
           />
 
           <View style={styles.divider} />
-          <Text style={styles.settingsCategory}>Sistema y Batería</Text>
+          <Text style={styles.settingsCategory}>
+            {t("settings.categories.system")}
+          </Text>
           <TouchableOpacity
             style={styles.checkboxContainer}
             onPress={() =>
@@ -252,7 +297,7 @@ export function GlobalSettingsModal({ onClose }: Props) {
               color={draftSettings.keepSocketAlive ? "#3498db" : "#888"}
             />
             <Text style={styles.checkboxLabel}>
-              Mantener conexión en Segundo Plano
+              {t("settings.labels.keepAlive")}
             </Text>
           </TouchableOpacity>
 
@@ -270,7 +315,7 @@ export function GlobalSettingsModal({ onClose }: Props) {
                 { marginLeft: 8, color: "#e74c3c", flexShrink: 1 },
               ]}
             >
-              Desactivar Optimización de Batería
+              {t("settings.labels.disableBatteryOpt")}
             </Text>
           </TouchableOpacity>
 
@@ -285,7 +330,7 @@ export function GlobalSettingsModal({ onClose }: Props) {
                 textAlign: "center",
               }}
             >
-              GUARDAR CAMBIOS
+              {t("settings.saveBtn")}
             </Text>
           </TouchableOpacity>
           <View style={{ height: 20 }} />
@@ -370,4 +415,32 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   secondaryBtnText: { fontWeight: "bold", fontSize: 14 },
+  languageSelectorContainer: {
+    flexDirection: "row",
+    gap: 10,
+    marginBottom: 25,
+    marginTop: 5,
+  },
+  languageBtn: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#333",
+    backgroundColor: "#111",
+    alignItems: "center",
+  },
+  languageBtnActive: {
+    borderColor: "#3498db",
+    backgroundColor: "rgba(52, 152, 219, 0.15)",
+  },
+  languageBtnText: {
+    color: "#aaa",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  languageBtnTextActive: {
+    color: "#3498db",
+    fontWeight: "bold",
+  },
 });

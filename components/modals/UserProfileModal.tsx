@@ -13,6 +13,7 @@ import { Image } from "expo-image";
 import { useChatStore } from "@/store/useChatStore";
 import { BBCodeText } from "@/components/BBCodeText";
 import { getGenderColor, getStatusColor } from "@/constants/theme";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   user: string;
@@ -21,6 +22,7 @@ interface Props {
 }
 
 export function UserProfileModal({ user, onClose, closeMenus }: Props) {
+  const { t } = useTranslation();
   const onlineCharacters = useChatStore((state) => state.onlineCharacters);
   const setActiveChat = useChatStore((state) => state.setActiveChat);
   const ignoredUsers = useChatStore((state) => state.ignoredUsers);
@@ -48,7 +50,7 @@ export function UserProfileModal({ user, onClose, closeMenus }: Props) {
       reportUser(user, reportDraft);
       setShowReportModal(false);
       setReportDraft("");
-      alert("El reporte ha sido enviado al staff global.");
+      alert(t("userProfile.reportModal.success"));
     }
   };
 
@@ -63,11 +65,11 @@ export function UserProfileModal({ user, onClose, closeMenus }: Props) {
           activeOpacity={1}
           style={[styles.profileCard, { padding: 20 }]}
         >
-          <Text style={styles.profileName}>Memo: {user}</Text>
+          <Text style={styles.profileName}>{t("userProfile.memoModal.title", { user })}</Text>
           <TextInput
             style={styles.textInputArea}
             multiline
-            placeholder="Escribe tus notas privadas aquí..."
+            placeholder={t("userProfile.memoModal.placeholder")}
             placeholderTextColor="#666"
             value={memoDraft}
             onChangeText={setMemoDraft}
@@ -83,7 +85,7 @@ export function UserProfileModal({ user, onClose, closeMenus }: Props) {
               style={styles.secondaryBtn}
               onPress={() => setShowMemoModal(false)}
             >
-              <Text style={styles.secondaryBtnText}>Cancelar</Text>
+              <Text style={styles.secondaryBtnText}>{t("userProfile.memoModal.cancel")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[
@@ -95,7 +97,7 @@ export function UserProfileModal({ user, onClose, closeMenus }: Props) {
               <Text
                 style={{ color: "#2ecc71", fontWeight: "bold", marginLeft: 8 }}
               >
-                Guardar
+                {t("userProfile.memoModal.save")}
               </Text>
             </TouchableOpacity>
           </View>
@@ -116,16 +118,15 @@ export function UserProfileModal({ user, onClose, closeMenus }: Props) {
           style={[styles.profileCard, { padding: 20 }]}
         >
           <Text style={[styles.profileName, { color: "#e67e22" }]}>
-            Reportar a {user}
+            {t("userProfile.reportModal.title", { user })}
           </Text>
           <Text style={{ color: "#aaa", fontSize: 12, marginBottom: 10 }}>
-            Esto enviará un Ticket/Alerta oficial al Staff de F-List. Por favor
-            describe el abuso detalladamente.
+            {t("userProfile.reportModal.warning")}
           </Text>
           <TextInput
             style={styles.textInputArea}
             multiline
-            placeholder="Motivo del reporte..."
+            placeholder={t("userProfile.reportModal.placeholder")}
             placeholderTextColor="#666"
             value={reportDraft}
             onChangeText={setReportDraft}
@@ -141,7 +142,7 @@ export function UserProfileModal({ user, onClose, closeMenus }: Props) {
               style={styles.secondaryBtn}
               onPress={() => setShowReportModal(false)}
             >
-              <Text style={styles.secondaryBtnText}>Cancelar</Text>
+              <Text style={styles.secondaryBtnText}>{t("userProfile.reportModal.cancel")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[
@@ -154,7 +155,7 @@ export function UserProfileModal({ user, onClose, closeMenus }: Props) {
               <Text
                 style={{ color: "#e74c3c", fontWeight: "bold", marginLeft: 8 }}
               >
-                Enviar Reporte
+                {t("userProfile.reportModal.send")}
               </Text>
             </TouchableOpacity>
           </View>
@@ -196,7 +197,9 @@ export function UserProfileModal({ user, onClose, closeMenus }: Props) {
                 },
               ]}
             >
-              {onlineCharacters[user]?.status.toUpperCase() || "OFFLINE"}
+              {onlineCharacters[user]?.status 
+                ? t(`statusModal.statuses.${onlineCharacters[user].status}`, { defaultValue: onlineCharacters[user].status.toUpperCase() })
+                : t("userProfile.offline")}
             </Text>
           </View>
         </View>
@@ -216,7 +219,7 @@ export function UserProfileModal({ user, onClose, closeMenus }: Props) {
             }}
           >
             <Ionicons name="chatbubbles" size={24} color="#3498db" />
-            <Text style={styles.gridBtnText}>Mensaje</Text>
+            <Text style={styles.gridBtnText}>{t("userProfile.actions.message")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.gridBtn}
@@ -227,19 +230,19 @@ export function UserProfileModal({ user, onClose, closeMenus }: Props) {
             }}
           >
             <Ionicons name="globe" size={24} color="#2ecc71" />
-            <Text style={styles.gridBtnText}>Perfil Web</Text>
+            <Text style={styles.gridBtnText}>{t("userProfile.actions.webProfile")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.gridBtn}
             onPress={async () => {
               setShowMemoModal(true);
-              setMemoDraft("Cargando nota desde el servidor...");
+              setMemoDraft(t("userProfile.memoModal.loading"));
               const serverNote = await fetchMemo(user);
               setMemoDraft(serverNote);
             }}
           >
             <Ionicons name="document-text" size={24} color="#f1c40f" />
-            <Text style={styles.gridBtnText}>Memo</Text>
+            <Text style={styles.gridBtnText}>{t("userProfile.actions.memo")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.gridBtn, isAdsHidden && styles.gridBtnActive]}
@@ -253,7 +256,7 @@ export function UserProfileModal({ user, onClose, closeMenus }: Props) {
             <Text
               style={[styles.gridBtnText, isAdsHidden && { color: "#e74c3c" }]}
             >
-              Hide Ads
+              {t("userProfile.actions.hideAds")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -268,7 +271,7 @@ export function UserProfileModal({ user, onClose, closeMenus }: Props) {
             <Text
               style={[styles.gridBtnText, isIgnored && { color: "#e74c3c" }]}
             >
-              Ignorar
+              {t("userProfile.actions.ignore")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -279,7 +282,7 @@ export function UserProfileModal({ user, onClose, closeMenus }: Props) {
             }}
           >
             <Ionicons name="warning" size={24} color="#e67e22" />
-            <Text style={styles.gridBtnText}>Reportar</Text>
+            <Text style={styles.gridBtnText}>{t("userProfile.actions.report")}</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>

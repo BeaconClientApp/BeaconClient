@@ -1,0 +1,278 @@
+{
+    "login": {
+        "title": "Log in to F-Chat",
+        "accountPlaceholder": "Account Name",
+        "passwordPlaceholder": "Password",
+        "rememberMe": "Remember credentials",
+        "enterBtn": "Log In",
+        "verifying": "Verifying session...",
+        "selectCharacter": "Select your Character",
+        "searchPlaceholder": "Search character...",
+        "logoutBtn": "Log Out",
+        "noCharacters": "No characters found.",
+        "networkError": "Network error during login."
+    },
+    "settings": {
+        "title": "Global Settings",
+        "language": "Language",
+        "saveBtn": "SAVE CHANGES",
+        "categories": {
+            "interface": "Interface & Chat",
+            "notifications": "Notifications & Alerts",
+            "history": "History & Inactivity",
+            "system": "System & Battery"
+        },
+        "labels": {
+            "sendOnEnter": "Send messages with Enter key",
+            "showAvatars": "Show Avatars in left list",
+            "fontSize": "Font Size (Pixels):",
+            "playSounds": "Play sounds",
+            "vibrate": "Vibrate on new messages",
+            "notifyOnName": "Notify when my name is mentioned (All rooms)",
+            "highlightWords": "Words to highlight (comma separated):",
+            "highlightPlaceholder": "e.g., rp, plot, adventure",
+            "logMessages": "Save Chat History (Logs)",
+            "logAds": "Save Ads in History",
+            "idleTimer": "Auto-Idle Timer (Minutes | 0 to disable):",
+            "keepAlive": "Keep connection alive in background",
+            "disableBatteryOpt": "Disable Battery Optimization"
+        },
+        "alerts": {
+            "batteryOptEnabled": "Your phone has 'Battery Optimization' enabled for this app. Settings will open: look for BeaconClient and select 'Unrestricted' to prevent background disconnections.",
+            "batteryOptDisabled": "Perfect! The system is no longer allowed to disconnect your app in the background.",
+            "batteryOptError": "Could not open battery settings automatically."
+        }
+    },
+    "channelList": {
+        "users": "users",
+        "mode": " • Mode: {{mode}}",
+        "openPrivateRoom": " • Open Private Room",
+        "joinBtn": "Join",
+        "searchPlaceholder": "Search channel or room...",
+        "tabOfficial": "Official",
+        "tabCustom": "User Rooms",
+        "loadingOfficial": "Loading official channels...",
+        "loadingCustom": "Loading user rooms...",
+        "noResults": "No results found."
+    },
+    "consoleArea": {
+        "noNormalMessages": "You cannot send normal messages here. Use a command (e.g., /join).",
+        "invalidCommand": "Unrecognized or invalid command.",
+        "inputPlaceholder": "Type a command (e.g., /status, /join)...",
+        "executeBtn": "EXECUTE"
+    },
+    "logsViewer": {
+        "title": "Logs Viewer",
+        "selectChat": "Select a chat...",
+        "allDates": "All",
+        "searchPlaceholder": "Search conversation...",
+        "emptyNoTarget": "Please select a chat to view its history.",
+        "emptyNoResults": "No results found.",
+        "modalTitle": "Your Conversations",
+        "cancelBtn": "Cancel"
+    },
+    "chat": {
+        "viewLogs": "View Full History (Logs)",
+        "isTyping": "{{name}} is typing...",
+        "typedSomething": "{{name}} typed something...",
+        "inputPlaceholder": "Type a message...",
+        "sendBtn": "SEND",
+        "helpModal": {
+            "title": "F-Chat Commands",
+            "general": "GENERAL COMMANDS",
+            "clear": "- Clears messages from the current channel.",
+            "clearall": "- Clears messages in ALL tabs.",
+            "uptime": "- Shows server uptime.",
+            "ignore": "- Blocks a user.",
+            "unignore": "- Unblocks a user.",
+            "ignorelist": "- Shows all users you have ignored.",
+            "status": "- online, looking, busy, dnd, idle, away.",
+            "reward": "- Gives a reward (Crown).",
+            "navigation": "NAVIGATION",
+            "join": "- Join a public channel or ID.",
+            "leave": "or",
+            "leaveDesc": "- Closes the current tab.",
+            "priv": "- Opens a private chat with the character.",
+            "channels": "- Opens the public channels list.",
+            "prooms": "- Opens the open private rooms list.",
+            "interaction": "INTERACTION",
+            "me": "- Or /me's for 3rd person roleplay.",
+            "ad": "- Sends an RP Ad.",
+            "roll": "- Rolls dice (e.g., /roll 1d20+5)."
+        },
+        "previewModal": {
+            "title": "Preview",
+            "empty": "Type something to see the preview..."
+        }
+    },
+    "roomChat": {
+        "loadingRoom": "Loading room...",
+        "tools": {
+            "room": "Room",
+            "alerts": "Alerts",
+            "logs": "Logs",
+            "report": "Report"
+        },
+        "filters": {
+            "both": "Both",
+            "chatOnly": "Chat Only",
+            "adsOnly": "Ads Only"
+        },
+        "inputType": {
+            "chat": "💬 Send Chat",
+            "ad": "🎭 Send Ad"
+        },
+        "placeholders": {
+            "chat": "Type a message...",
+            "ad": "Draft your Roleplay Ad..."
+        },
+        "sendBtn": "SEND",
+        "modals": {
+            "description": {
+                "title": "Description",
+                "empty": "No description."
+            },
+            "report": {
+                "title": "🚨 Alert Global Staff",
+                "warning": "WARNING: This will send a real alert.",
+                "placeholder": "Describe the issue...",
+                "submitBtn": "SEND ALERT"
+            },
+            "settings": {
+                "title": "Notification Settings",
+                "notifyAll": "Notify all chat messages (No Ads)",
+                "notifyName": "Notify if my name is mentioned",
+                "highlightWords": "Words to highlight (comma separated):",
+                "highlightPlaceholder": "e.g., rp, plot, adventure",
+                "saveBtn": "SAVE SETTINGS"
+            }
+        }
+    },
+    "statusModal": {
+        "title": "Update Status",
+        "placeholder": "Status message (optional)...",
+        "cancelBtn": "Cancel",
+        "updateBtn": "Update",
+        "statuses": {
+            "online": "Online",
+            "looking": "Looking",
+            "busy": "Busy",
+            "dnd": "Do Not Disturb",
+            "idle": "Idle",
+            "away": "Away"
+        }
+    },
+    "userProfile": {
+        "offline": "OFFLINE",
+        "actions": {
+            "message": "Message",
+            "webProfile": "Web Profile",
+            "memo": "Memo",
+            "hideAds": "Hide Ads",
+            "ignore": "Ignore",
+            "report": "Report"
+        },
+        "memoModal": {
+            "title": "Memo: {{user}}",
+            "placeholder": "Type your private notes here...",
+            "loading": "Loading note from server...",
+            "cancel": "Cancel",
+            "save": "Save"
+        },
+        "reportModal": {
+            "title": "Report {{user}}",
+            "warning": "This will send an official Ticket/Alert to F-List Staff. Please describe the abuse in detail.",
+            "placeholder": "Reason for reporting...",
+            "cancel": "Cancel",
+            "send": "Send Report",
+            "success": "The report has been sent to the global staff."
+        }
+    },
+    "bbcode": {
+        "spoilerText": "Tap to view spoiler",
+        "privateRoom": "Private Room"
+    },
+    "leftMenu": {
+        "myCharacter": "My Character",
+        "console": "Console",
+        "publicChannels": "Public Channels",
+        "logs": "History (Logs)",
+        "globalSettings": "Global Settings",
+        "privateMessages": "Private Messages",
+        "noActivePms": "No active PMs",
+        "rooms": "Rooms",
+        "noActiveRooms": "You are not in any room",
+        "disconnect": "Disconnect"
+    },
+    "mainLayout": {
+        "titleConsole": "Console",
+        "titleChannels": "Public Channels",
+        "reconnecting": "Reconnecting to chat...",
+        "backgroundNotifTitle": "F-Chat (Background)",
+        "backgroundNotifBody": "Connected as {{name}}..."
+    },
+    "rightMenu": {
+        "tabs": {
+            "members": "Members ({{count}})",
+            "bookmarks": "Bookmarks"
+        },
+        "contactList": "Contact List",
+        "sections": {
+            "onlineFriends": "🟢 Friends ({{count}})",
+            "onlineBookmarks": "🔖 Bookmarks ({{count}})",
+            "offlineFriends": "⚪ Offline ({{count}})"
+        }
+    },
+    "chatCommands": {
+        "ignoreList": "🚫 Ignored List: {{users}}",
+        "none": "None",
+        "invalidStatus": "⚠️ Invalid status. Use: online, looking, busy, dnd, idle, away.",
+        "roomDescription": "📝 Room Description:\n{{desc}}",
+        "chatCleared": "🧹 Chat cleared",
+        "allChatsCleared": "🧹 All chats cleared",
+        "codeCopied": "🔗 Code copied to clipboard",
+        "usePreviewBtn": "👁️ Use the eye button on the bottom bar.",
+        "useRightMenuMembers": "👥 Use the right menu to see the members.",
+        "useRightMenuFriends": "👥 Use the right menu to see your friends.",
+        "unknownCommand": "⚠️ Unknown or unimplemented command: /{{cmd}}"
+    },
+    "chatStore": {
+        "errors": {
+            "sessionExpired": "Your session has expired. Please log out and log in again.",
+            "attention": "Attention: {{message}}",
+            "errorPrefix": "⚠️ Error: {{message}}",
+            "wsNetworkError": "WebSocket network error.",
+            "ticketError": "Error requesting ticket from the server.",
+            "memoSaveError": "There was an error saving the memo: {{error}}",
+            "serverConnectionError": "Could not connect to the server."
+        },
+        "console": {
+            "connectionSuccess": "✅ Connection successful.",
+            "hello": "👋 {{message}}",
+            "helloDefault": "Hello!",
+            "usersConnected": "📊 There are {{count}} connected users.",
+            "userConnected": "✨ [user]{{user}}[/user] has connected.",
+            "statusChanged": "📍 [user]{{user}}[/user] changed status to {{status}}",
+            "userDisconnected": "👣 [user]{{user}}[/user] has disconnected.",
+            "invitedToRoom": "💌 [user]{{sender}}[/user] invited you to the room: [session={{title}}]{{room}}[/session]",
+            "modSanction": "🛡️ Mod: [user]{{operator}}[/user] sanctioned [user]{{user}}[/user] in {{channel}}.",
+            "systemMessage": "⚙️ System: {{message}}",
+            "broadcast": "📢 BROADCAST: {{message}}",
+            "serverConfigLoaded": "🎛️ Server config loaded: {{variable}}",
+            "webNotification": "🔔 Web Notification: You have a new event of type '{{type}}'.",
+            "uptime": "⏱️ Server Uptime: Started on {{start}} | Users On: {{users}} (Peak: {{max}}) | Channels: {{channels}} | Connections: {{accepted}}",
+            "unknownCommand": "❓ Unknown command: {{command}}"
+        },
+        "notifications": {
+            "privateMessageTitle": "💬 Message from {{sender}}",
+            "roomMessageTitle": "💬 Notification in {{room}}",
+            "roomMessageBody": "Message from {{sender}}",
+            "diceAlertTitle": "🎲 Alert in {{room}}",
+            "diceAlertBody": "Someone rolled the dice/bottle and mentioned you."
+        },
+        "reports": {
+            "roomAlert": "[Alert from Room: {{channel}}] {{report}}",
+            "userReport": "Report against {{character}}: {{reason}}"
+        }
+    }
+}

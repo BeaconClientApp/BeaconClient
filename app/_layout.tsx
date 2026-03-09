@@ -2,6 +2,7 @@ import { Stack } from "expo-router";
 import notifee from '@notifee/react-native';
 import { useChatStore } from '@/store/useChatStore';
 import { useSettingsStore } from '@/store/useSettingsStore';
+import '../i18n';
 
 let backgroundPingTimeout: ReturnType<typeof setTimeout> | null = null;
 let stopCurrentService: (() => void) | null = null;

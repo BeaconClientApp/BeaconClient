@@ -26,6 +26,8 @@ import { GlobalSettingsModal } from "@/components/modals/GlobalSettingsModal";
 import { StatusModal } from "@/components/modals/StatusModal";
 import { UserProfileModal } from "@/components/modals/UserProfileModal";
 import { getGenderColor, getStatusIcon } from "@/constants/theme";
+import i18n from '@/i18n';
+import { useTranslation } from "react-i18next";
 
 try {
   Notifications.setNotificationHandler({
@@ -42,6 +44,7 @@ try {
 }
 
 export function MainLayout() {
+  const { t } = useTranslation();
   const [isLeftMenuOpen, setLeftMenuOpen] = useState(false);
   const [isRightMenuOpen, setRightMenuOpen] = useState(false);
 
@@ -104,8 +107,10 @@ export function MainLayout() {
             state.myCharacterName
           ) {
             await notifee.displayNotification({
-              title: "F-Chat (Segundo Plano)",
-              body: `Conectado como ${state.myCharacterName}...`,
+              title: i18n.t("mainLayout.backgroundNotifTitle"),
+              body: i18n.t("mainLayout.backgroundNotifBody", {
+                name: state.myCharacterName,
+              }),
               android: {
                 channelId: "socket-service",
                 asForegroundService: true,
@@ -148,8 +153,8 @@ export function MainLayout() {
   const topBarTitle = activeChat
     ? joinedChannels[activeChat]?.title || activeChat
     : activeTab === "channels"
-      ? "Canales Públicos"
-      : "Consola";
+      ? t("mainLayout.titleChannels")
+      : t("mainLayout.titleConsole");
   const isRoom = activeChat ? !!joinedChannels[activeChat] : false;
 
   return (
@@ -224,7 +229,7 @@ export function MainLayout() {
 
       {!isWsConnected && myCharacterName && (
         <View style={styles.reconnectBar}>
-          <Text style={styles.reconnectText}>Reconectando al chat...</Text>
+          <Text style={styles.reconnectText}>{t("mainLayout.reconnecting")}</Text>
         </View>
       )}
 

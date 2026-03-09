@@ -1,0 +1,278 @@
+{
+    "login": {
+        "title": "Iniciar Sesión en F-Chat",
+        "accountPlaceholder": "Nombre de Cuenta",
+        "passwordPlaceholder": "Contraseña",
+        "rememberMe": "Recordar credenciales",
+        "enterBtn": "Entrar",
+        "verifying": "Verificando sesión...",
+        "selectCharacter": "Selecciona tu Personaje",
+        "searchPlaceholder": "Buscar personaje...",
+        "logoutBtn": "Cerrar Sesión",
+        "noCharacters": "No se encontraron personajes.",
+        "networkError": "Error de red al iniciar sesión."
+    },
+    "settings": {
+        "title": "Ajustes Globales",
+        "language": "Idioma",
+        "saveBtn": "GUARDAR CAMBIOS",
+        "categories": {
+            "interface": "Interfaz y Chat",
+            "notifications": "Notificaciones y Alertas",
+            "history": "Historial e Inactividad",
+            "system": "Sistema y Batería"
+        },
+        "labels": {
+            "sendOnEnter": "Enviar mensajes con la tecla Enter",
+            "showAvatars": "Mostrar Avatares en la lista izquierda",
+            "fontSize": "Tamaño de Letra (Píxeles):",
+            "playSounds": "Reproducir sonidos",
+            "vibrate": "Vibrar al recibir mensajes",
+            "notifyOnName": "Notificar si mencionan mi nombre (Todas las salas)",
+            "highlightWords": "Palabras a resaltar (separadas por coma):",
+            "highlightPlaceholder": "ej: rol, trama, aventura",
+            "logMessages": "Guardar Historial (Logs)",
+            "logAds": "Guardar Ads en el Historial",
+            "idleTimer": "Auto-Idle Timer (Minutos | 0 para desactivar):",
+            "keepAlive": "Mantener conexión en Segundo Plano",
+            "disableBatteryOpt": "Desactivar Optimización de Batería"
+        },
+        "alerts": {
+            "batteryOptEnabled": "Tu teléfono tiene activada la 'Optimización de Batería' para esta app. Se abrirán los Ajustes: busca BeaconClient y selecciona 'No Restringido' (Unrestricted) para evitar que se desconecte en segundo plano.",
+            "batteryOptDisabled": "¡Perfecto! El sistema ya no tiene permitido desconectar tu app en segundo plano.",
+            "batteryOptError": "No se pudieron abrir los ajustes de batería automáticamente."
+        }
+    },
+    "channelList": {
+        "users": "usuarios",
+        "mode": " • Modo: {{mode}}",
+        "openPrivateRoom": " • Sala Privada Abierta",
+        "joinBtn": "Entrar",
+        "searchPlaceholder": "Buscar canal o sala...",
+        "tabOfficial": "Oficiales",
+        "tabCustom": "Salas de Usuarios",
+        "loadingOfficial": "Cargando canales oficiales...",
+        "loadingCustom": "Cargando salas de usuarios...",
+        "noResults": "No se encontraron resultados."
+    },
+    "consoleArea": {
+        "noNormalMessages": "No puedes enviar mensajes normales aquí. Usa un comando (ej. /join).",
+        "invalidCommand": "Comando no reconocido o inválido.",
+        "inputPlaceholder": "Escribe un comando (ej. /status, /join)...",
+        "executeBtn": "EJECUTAR"
+    },
+    "logsViewer": {
+        "title": "Visor de Logs",
+        "selectChat": "Selecciona un chat...",
+        "allDates": "Todo",
+        "searchPlaceholder": "Buscar en la conversación...",
+        "emptyNoTarget": "Por favor, selecciona un chat para ver su historial.",
+        "emptyNoResults": "No se encontraron resultados.",
+        "modalTitle": "Tus Conversaciones",
+        "cancelBtn": "Cancelar"
+    },
+    "chat": {
+        "viewLogs": "Ver Historial Completo (Logs)",
+        "isTyping": "{{name}} está escribiendo...",
+        "typedSomething": "{{name}} escribió algo...",
+        "inputPlaceholder": "Escribe un mensaje...",
+        "sendBtn": "ENVIAR",
+        "helpModal": {
+            "title": "Comandos de F-Chat",
+            "general": "COMANDOS GENERALES",
+            "clear": "- Limpia los mensajes del canal actual.",
+            "clearall": "- Limpia los mensajes en TODAS las pestañas.",
+            "uptime": "- Muestra el tiempo de actividad del servidor.",
+            "ignore": "- Bloquea a un usuario.",
+            "unignore": "- Desbloquea a un usuario.",
+            "ignorelist": "- Muestra a todos los usuarios que has ignorado.",
+            "status": "- online, looking, busy, dnd, idle, away.",
+            "reward": "- Da una recompensa (Crown).",
+            "navigation": "NAVEGACIÓN",
+            "join": "- Únete a un canal público o ID.",
+            "leave": "o",
+            "leaveDesc": "- Cierra la pestaña actual.",
+            "priv": "- Abre un chat privado con el personaje.",
+            "channels": "- Abre la lista de canales públicos.",
+            "prooms": "- Abre la lista de canales privados abiertos.",
+            "interaction": "INTERACCIÓN",
+            "me": "- O /me's para rol en 3ra persona.",
+            "ad": "- Envía un RP Ad.",
+            "roll": "- Tira dados (ej: /roll 1d20+5)."
+        },
+        "previewModal": {
+            "title": "Vista Previa",
+            "empty": "Escribe algo para ver la vista previa..."
+        }
+    },
+    "roomChat": {
+        "loadingRoom": "Cargando sala...",
+        "tools": {
+            "room": "Sala",
+            "alerts": "Alertas",
+            "logs": "Logs",
+            "report": "Reportar"
+        },
+        "filters": {
+            "both": "Ambos",
+            "chatOnly": "Solo Chat",
+            "adsOnly": "Solo Ads"
+        },
+        "inputType": {
+            "chat": "💬 Enviar Chat",
+            "ad": "🎭 Enviar Ad"
+        },
+        "placeholders": {
+            "chat": "Escribe un mensaje...",
+            "ad": "Redacta tu Anuncio de Rol..."
+        },
+        "sendBtn": "ENVIAR",
+        "modals": {
+            "description": {
+                "title": "Descripción",
+                "empty": "Sin descripción."
+            },
+            "report": {
+                "title": "🚨 Alertar al Staff Global",
+                "warning": "ATENCIÓN: Esto enviará una alerta real.",
+                "placeholder": "Describe el problema...",
+                "submitBtn": "ENVIAR ALERTA"
+            },
+            "settings": {
+                "title": "Ajustes de Notificación",
+                "notifyAll": "Notificar todos los mensajes de chat (No Ads)",
+                "notifyName": "Notificar si mencionan mi nombre",
+                "highlightWords": "Palabras a resaltar (separadas por coma):",
+                "highlightPlaceholder": "ej: rol, trama, aventura",
+                "saveBtn": "GUARDAR AJUSTES"
+            }
+        }
+    },
+    "statusModal": {
+        "title": "Actualizar Estado",
+        "placeholder": "Mensaje de estado (opcional)...",
+        "cancelBtn": "Cancelar",
+        "updateBtn": "Actualizar",
+        "statuses": {
+            "online": "Conectado",
+            "looking": "Buscando",
+            "busy": "Ocupado",
+            "dnd": "No molestar",
+            "idle": "Inactivo",
+            "away": "Ausente"
+        }
+    },
+    "userProfile": {
+        "offline": "OFFLINE",
+        "actions": {
+            "message": "Mensaje",
+            "webProfile": "Perfil Web",
+            "memo": "Memo",
+            "hideAds": "Ocultar Ads",
+            "ignore": "Ignorar",
+            "report": "Reportar"
+        },
+        "memoModal": {
+            "title": "Memo: {{user}}",
+            "placeholder": "Escribe tus notas privadas aquí...",
+            "loading": "Cargando nota desde el servidor...",
+            "cancel": "Cancelar",
+            "save": "Guardar"
+        },
+        "reportModal": {
+            "title": "Reportar a {{user}}",
+            "warning": "Esto enviará un Ticket/Alerta oficial al Staff de F-List. Por favor describe el abuso detalladamente.",
+            "placeholder": "Motivo del reporte...",
+            "cancel": "Cancelar",
+            "send": "Enviar Reporte",
+            "success": "El reporte ha sido enviado al staff global."
+        }
+    },
+    "bbcode": {
+        "spoilerText": "Toca para ver el spoiler",
+        "privateRoom": "Sala Privada"
+    },
+    "leftMenu": {
+        "myCharacter": "Mi Personaje",
+        "console": "Consola",
+        "publicChannels": "Canales Públicos",
+        "logs": "Historial (Logs)",
+        "globalSettings": "Ajustes Globales",
+        "privateMessages": "Mensajes Privados",
+        "noActivePms": "No hay PMs activos",
+        "rooms": "Salas",
+        "noActiveRooms": "No estás en ninguna sala",
+        "disconnect": "Desconectar"
+    },
+    "mainLayout": {
+        "titleConsole": "Consola",
+        "titleChannels": "Canales Públicos",
+        "reconnecting": "Reconectando al chat...",
+        "backgroundNotifTitle": "F-Chat (Segundo Plano)",
+        "backgroundNotifBody": "Conectado como {{name}}..."
+    },
+    "rightMenu": {
+        "tabs": {
+            "members": "Miembros ({{count}})",
+            "bookmarks": "Bookmarks"
+        },
+        "contactList": "Lista de Contactos",
+        "sections": {
+            "onlineFriends": "🟢 Amigos ({{count}})",
+            "onlineBookmarks": "🔖 Bookmarks ({{count}})",
+            "offlineFriends": "⚪ Desconectados ({{count}})"
+        }
+    },
+    "chatCommands": {
+        "ignoreList": "🚫 Lista de Ignorados: {{users}}",
+        "none": "Ninguno",
+        "invalidStatus": "⚠️ Estado inválido. Usa: online, looking, busy, dnd, idle, away.",
+        "roomDescription": "📝 Descripción de la Sala:\n{{desc}}",
+        "chatCleared": "🧹 Chat limpiado",
+        "allChatsCleared": "🧹 Todos los chats limpiados",
+        "codeCopied": "🔗 Código copiado al portapapeles",
+        "usePreviewBtn": "👁️ Usa el botón del ojo en la barra inferior.",
+        "useRightMenuMembers": "👥 Usa el menú derecho para ver los miembros.",
+        "useRightMenuFriends": "👥 Usa el menú derecho para ver a tus amigos.",
+        "unknownCommand": "⚠️ Comando desconocido o no implementado: /{{cmd}}"
+    },
+    "chatStore": {
+        "errors": {
+            "sessionExpired": "Tu sesión expiró. Cierra sesión y vuelve a ingresar.",
+            "attention": "Atención: {{message}}",
+            "errorPrefix": "⚠️ Error: {{message}}",
+            "wsNetworkError": "Error de red en WebSocket.",
+            "ticketError": "Error al pedir ticket al servidor.",
+            "memoSaveError": "Hubo un error al guardar el memo: {{error}}",
+            "serverConnectionError": "No se pudo conectar con el servidor."
+        },
+        "console": {
+            "connectionSuccess": "✅ Conexión exitosa.",
+            "hello": "👋 {{message}}",
+            "helloDefault": "¡Hola!",
+            "usersConnected": "📊 Hay {{count}} usuarios conectados.",
+            "userConnected": "✨ [user]{{user}}[/user] se ha conectado.",
+            "statusChanged": "📍 [user]{{user}}[/user] cambió a {{status}}",
+            "userDisconnected": "👣 [user]{{user}}[/user] se ha desconectado.",
+            "invitedToRoom": "💌 [user]{{sender}}[/user] te invitó a la sala: [session={{title}}]{{room}}[/session]",
+            "modSanction": "🛡️ Mod: [user]{{operator}}[/user] sancionó a [user]{{user}}[/user] en {{channel}}.",
+            "systemMessage": "⚙️ Sistema: {{message}}",
+            "broadcast": "📢 BROADCAST: {{message}}",
+            "serverConfigLoaded": "🎛️ Configuración del servidor cargada: {{variable}}",
+            "webNotification": "🔔 Notificación Web: Tienes un nuevo evento tipo '{{type}}'.",
+            "uptime": "⏱️ Uptime del Servidor: Empezó el {{start}} | Usuarios On: {{users}} (Pico: {{max}}) | Canales: {{channels}} | Conexiones: {{accepted}}",
+            "unknownCommand": "❓ Comando desconocido: {{command}}"
+        },
+        "notifications": {
+            "privateMessageTitle": "💬 Mensaje de {{sender}}",
+            "roomMessageTitle": "💬 Notificación en {{room}}",
+            "roomMessageBody": "Mensaje de {{sender}}",
+            "diceAlertTitle": "🎲 Alerta en {{room}}",
+            "diceAlertBody": "Alguien tiró los dados/botella y te mencionó."
+        },
+        "reports": {
+            "roomAlert": "[Alert from Room: {{channel}}] {{report}}",
+            "userReport": "Report against {{character}}: {{reason}}"
+        }
+    }
+}

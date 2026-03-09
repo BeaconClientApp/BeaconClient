@@ -13,6 +13,7 @@ import { useChatStore } from "@/store/useChatStore";
 import { BBCodeText } from "@/components/BBCodeText";
 import { useSettingsStore } from "@/store/useSettingsStore";
 import { BBCODE_COLORS } from "@/constants/theme";
+import { useTranslation } from "react-i18next";
 
 const formatTime = (ts?: number) => {
   if (!ts) return "";
@@ -31,6 +32,7 @@ const formatTime = (ts?: number) => {
 };
 
 export function PrivateChat() {
+  const { t } = useTranslation();
   const [inputText, setInputText] = useState("");
 
   const activeChat = useChatStore((state) => state.activeChat!);
@@ -149,7 +151,7 @@ export function PrivateChat() {
         >
           <Ionicons name="folder-open" size={16} color="#f1c40f" />
           <Text style={[styles.toolBtnText, { color: "#f1c40f" }]}>
-            Ver Historial Completo (Logs)
+            {t("chat.viewLogs")}
           </Text>
         </TouchableOpacity>
       </View>
@@ -213,8 +215,8 @@ export function PrivateChat() {
         <View style={styles.typingIndicator}>
           <Text style={styles.typingText}>
             {partnerTypingStatus === "typing"
-              ? `${activeChat} está escribiendo...`
-              : `${activeChat} escribió algo...`}
+              ? t("chat.isTyping", { name: activeChat })
+              : t("chat.typedSomething", { name: activeChat })}
           </Text>
         </View>
       )}
@@ -379,7 +381,7 @@ export function PrivateChat() {
             onSelectionChange={(e) =>
               setInputSelection(e.nativeEvent.selection)
             }
-            placeholder="Escribe un mensaje..."
+            placeholder={t("chat.inputPlaceholder")}
             placeholderTextColor="#888"
             multiline
             maxLength={MAX_LENGTH}
@@ -392,7 +394,9 @@ export function PrivateChat() {
             onPress={handleSend}
             disabled={inputText.trim().length === 0}
           >
-            <Text style={{ color: "white", fontWeight: "bold" }}>ENVIAR</Text>
+            <Text style={{ color: "white", fontWeight: "bold" }}>
+              {t("chat.sendBtn")}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -405,7 +409,7 @@ export function PrivateChat() {
         >
           <TouchableOpacity activeOpacity={1} style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Comandos de F-Chat</Text>
+              <Text style={styles.modalTitle}>{t("chat.helpModal.title")}</Text>
               <TouchableOpacity onPress={() => setShowHelpModal(false)}>
                 <Ionicons name="close" size={28} color="#aaa" />
               </TouchableOpacity>
@@ -413,50 +417,67 @@ export function PrivateChat() {
             <ScrollView style={styles.modalScroll}>
               <Text style={styles.helpText}>
                 <Text style={{ color: "#f39c12", fontWeight: "bold" }}>
-                  COMANDOS GENERALES
+                  {t("chat.helpModal.general")}
                 </Text>
                 {"\n"}
-                <Text style={styles.helpCmd}>/clear</Text> - Limpia los mensajes
-                del canal actual.{"\n"}
-                <Text style={styles.helpCmd}>/clearall</Text> - Limpia los
-                mensajes en TODAS las pestañas.{"\n"}
-                <Text style={styles.helpCmd}>/uptime</Text> - Muestra el tiempo
-                de actividad del servidor.{"\n"}
-                <Text style={styles.helpCmd}>/ignore [nombre]</Text> - Bloquea a
-                un usuario.{"\n"}
-                <Text style={styles.helpCmd}>/unignore [nombre]</Text> -
-                Desbloquea a un usuario.{"\n"}
-                <Text style={styles.helpCmd}>/ignorelist</Text> - Muestra a
-                todos los usuarios que has ignorado.{"\n"}
-                <Text style={styles.helpCmd}>/status [estado] [msj]</Text> -
-                online, looking, busy, dnd, idle, away.{"\n"}
-                <Text style={styles.helpCmd}>/reward [nombre]</Text> - Da una
-                recompensa (Crown).{"\n\n"}
+                <Text style={styles.helpCmd}>/clear</Text>{" "}
+                {t("chat.helpModal.clear")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/clearall</Text>{" "}
+                {t("chat.helpModal.clearall")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/uptime</Text>{" "}
+                {t("chat.helpModal.uptime")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/ignore [nombre]</Text>{" "}
+                {t("chat.helpModal.ignore")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/unignore [nombre]</Text>{" "}
+                {t("chat.helpModal.unignore")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/ignorelist</Text>{" "}
+                {t("chat.helpModal.ignorelist")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/status [estado] [msj]</Text>{" "}
+                {t("chat.helpModal.status")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/reward [nombre]</Text>{" "}
+                {t("chat.helpModal.reward")}
+                {"\n\n"}
                 <Text style={{ color: "#3498db", fontWeight: "bold" }}>
-                  NAVEGACIÓN
+                  {t("chat.helpModal.navigation")}
                 </Text>
                 {"\n"}
-                <Text style={styles.helpCmd}>/join [sala]</Text> - Únete a un
-                canal público o ID.{"\n"}
-                <Text style={styles.helpCmd}>/leave</Text> o{" "}
-                <Text style={styles.helpCmd}>/close</Text> - Cierra la pestaña
-                actual.{"\n"}
-                <Text style={styles.helpCmd}>/priv [nombre]</Text> - Abre un
-                chat privado con el personaje.{"\n"}
-                <Text style={styles.helpCmd}>/channels</Text> - Abre la lista de
-                canales públicos.{"\n"}
-                <Text style={styles.helpCmd}>/prooms</Text> - Abre la lista de
-                canales privados abiertos.{"\n\n"}
+                <Text style={styles.helpCmd}>/join [sala]</Text>{" "}
+                {t("chat.helpModal.join")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/leave</Text>{" "}
+                {t("chat.helpModal.leave")}{" "}
+                <Text style={styles.helpCmd}>/close</Text>{" "}
+                {t("chat.helpModal.leaveDesc")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/priv [nombre]</Text>{" "}
+                {t("chat.helpModal.priv")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/channels</Text>{" "}
+                {t("chat.helpModal.channels")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/prooms</Text>{" "}
+                {t("chat.helpModal.prooms")}
+                {"\n\n"}
                 <Text style={{ color: "#2ecc71", fontWeight: "bold" }}>
-                  INTERACCIÓN
+                  {t("chat.helpModal.interaction")}
                 </Text>
                 {"\n"}
-                <Text style={styles.helpCmd}>/me [acción]</Text> - O /me&apos;s
-                para rol en 3ra persona.{"\n"}
-                <Text style={styles.helpCmd}>/ad [mensaje]</Text> - Envía un RP
-                Ad.{"\n"}
-                <Text style={styles.helpCmd}>/roll [dados]</Text> - Tira dados
-                (ej: /roll 1d20+5).{"\n"}
+                <Text style={styles.helpCmd}>/me [acción]</Text>{" "}
+                {t("chat.helpModal.me")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/ad [mensaje]</Text>{" "}
+                {t("chat.helpModal.ad")}
+                {"\n"}
+                <Text style={styles.helpCmd}>/roll [dados]</Text>{" "}
+                {t("chat.helpModal.roll")}
+                {"\n"}
               </Text>
             </ScrollView>
           </TouchableOpacity>
@@ -474,7 +495,7 @@ export function PrivateChat() {
             style={[styles.modalContent, { maxHeight: "60%" }]}
           >
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Vista Previa</Text>
+              <Text style={styles.modalTitle}>{t("chat.previewModal.title")}</Text>
               <TouchableOpacity onPress={() => setShowPreviewModal(false)}>
                 <Ionicons name="close" size={28} color="#aaa" />
               </TouchableOpacity>
@@ -490,7 +511,7 @@ export function PrivateChat() {
                 ]}
               >
                 <BBCodeText
-                  text={inputText || "Escribe algo para ver la vista previa..."}
+                  text={inputText || t("chat.previewModal.empty")}
                 />
               </View>
             </ScrollView>

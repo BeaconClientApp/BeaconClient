@@ -16,8 +16,10 @@ import {
   getStatusIcon,
   getStatusColor,
 } from "@/constants/theme";
+import { useTranslation } from "react-i18next";
 
 export function LeftMenu({ onClose }: { onClose: () => void }) {
+  const { t } = useTranslation();
   const disconnectChat = useChatStore((state) => state.disconnectChat);
   const setActiveChat = useChatStore((state) => state.setActiveChat);
   const myCharacterName = useChatStore((state) => state.myCharacterName);
@@ -68,7 +70,7 @@ export function LeftMenu({ onClose }: { onClose: () => void }) {
           )}
           <View style={styles.headerInfo}>
             <Text style={styles.headerText}>
-              {myCharacterName || "Mi Personaje"}
+              {myCharacterName || t("leftMenu.myCharacter")}
             </Text>
             <View
               style={{
@@ -90,7 +92,9 @@ export function LeftMenu({ onClose }: { onClose: () => void }) {
                   fontWeight: "bold",
                 }}
               >
-                {currentStatus.toUpperCase()}
+                {t(`statusModal.statuses.${currentStatus}`, {
+                  defaultValue: currentStatus.toUpperCase(),
+                }).toUpperCase()}
               </Text>
             </View>
             {currentStatusMsg ? (
@@ -112,7 +116,7 @@ export function LeftMenu({ onClose }: { onClose: () => void }) {
           }}
         >
           <Ionicons name="terminal" size={20} color="#aaa" />
-          <Text style={styles.menuItemText}>Consola</Text>
+          <Text style={styles.menuItemText}>{t("leftMenu.console")}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -126,7 +130,7 @@ export function LeftMenu({ onClose }: { onClose: () => void }) {
           }}
         >
           <Ionicons name="list" size={20} color="#aaa" />
-          <Text style={styles.menuItemText}>Canales Públicos</Text>
+          <Text style={styles.menuItemText}>{t("leftMenu.publicChannels")}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -137,7 +141,7 @@ export function LeftMenu({ onClose }: { onClose: () => void }) {
           }}
         >
           <Ionicons name="folder-open" size={20} color="#f1c40f" />
-          <Text style={styles.menuItemText}>Historial (Logs)</Text>
+          <Text style={styles.menuItemText}>{t("leftMenu.logs")}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.menuItem}
@@ -147,14 +151,14 @@ export function LeftMenu({ onClose }: { onClose: () => void }) {
           }}
         >
           <Ionicons name="settings" size={20} color="#aaa" />
-          <Text style={styles.menuItemText}>Ajustes Globales</Text>
+          <Text style={styles.menuItemText}>{t("leftMenu.globalSettings")}</Text>
         </TouchableOpacity>
 
         <View style={styles.divider} />
-        <Text style={styles.sectionTitle}>Mensajes Privados</Text>
+        <Text style={styles.sectionTitle}>{t("leftMenu.privateMessages")}</Text>
 
         {openChats.length === 0 ? (
-          <Text style={styles.emptyText}>No hay PMs activos</Text>
+          <Text style={styles.emptyText}>{t("leftMenu.noActivePms")}</Text>
         ) : (
           openChats.map((item) => {
             const isPinned = pinnedChats.includes(item);
@@ -239,11 +243,11 @@ export function LeftMenu({ onClose }: { onClose: () => void }) {
 
         <View style={styles.divider} />
         <Text style={styles.sectionTitle}>
-          Salas ({joinedRoomsList.length})
+          {t("leftMenu.rooms")} ({joinedRoomsList.length})
         </Text>
 
         {joinedRoomsList.length === 0 ? (
-          <Text style={styles.emptyText}>No estás en ninguna sala</Text>
+          <Text style={styles.emptyText}>{t("leftMenu.noActiveRooms")}</Text>
         ) : (
           joinedRoomsList.map((room) => {
             const isPinned = pinnedRooms.includes(room.id);
@@ -321,7 +325,7 @@ export function LeftMenu({ onClose }: { onClose: () => void }) {
         <TouchableOpacity style={styles.menuItem} onPress={disconnectChat}>
           <Ionicons name="log-out" size={20} color="#ff4757" />
           <Text style={[styles.menuItemText, { color: "#ff4757" }]}>
-            Desconectar
+            {t("leftMenu.disconnect")}
           </Text>
         </TouchableOpacity>
         <View style={{ height: 30 }} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   SectionList,
   FlatList,
   StyleSheet,
+  Platform,
 } from "react-native";
 import { useChatStore } from "@/store/useChatStore";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,6 +15,7 @@ import { useTranslation } from "react-i18next";
 
 export function RightMenu({ onSelect }: { onSelect: () => void }) {
   const { t } = useTranslation();
+
   const friends = useChatStore((state) => state.friends);
   const onlineCharacters = useChatStore((state) => state.onlineCharacters);
   const globalOps = useChatStore((state) => state.globalOps);
@@ -36,35 +38,32 @@ export function RightMenu({ onSelect }: { onSelect: () => void }) {
     else setTab("friends");
   }, [activeChat, isRoom]);
 
-  const sortedFriends = [...friends].sort((a, b) => a.localeCompare(b));
+  const friendSections = useMemo(() => {
+    const sortedFriends = [...friends].sort((a, b) => a.localeCompare(b));
 
-  const onlineAmigos = sortedFriends.filter(
-    (f) => onlineCharacters[f] && apiFriends.includes(f),
-  );
-  const onlineBookmarks = sortedFriends.filter(
-    (f) => onlineCharacters[f] && !apiFriends.includes(f),
-  );
-  const offlineFriends = sortedFriends.filter((f) => !onlineCharacters[f]);
+    const onlineAmigos = sortedFriends.filter(
+      (f) => onlineCharacters[f] && apiFriends.includes(f),
+    );
+    const onlineBookmarks = sortedFriends.filter(
+      (f) => onlineCharacters[f] && !apiFriends.includes(f),
+    );
 
-  const friendSections = [];
-  if (onlineAmigos.length > 0)
-    friendSections.push({
-      title: t("rightMenu.sections.onlineFriends", { count: onlineAmigos.length }),
-      data: onlineAmigos,
-      type: "online",
-    });
-  if (onlineBookmarks.length > 0)
-    friendSections.push({
-      title: t("rightMenu.sections.onlineBookmarks", { count: onlineBookmarks.length }),
-      data: onlineBookmarks,
-      type: "online",
-    });
-  if (offlineFriends.length > 0)
-    friendSections.push({
-      title: t("rightMenu.sections.offlineFriends", { count: offlineFriends.length }),
-      data: offlineFriends,
-      type: "offline",
-    });
+    const sections = [];
+    if (onlineAmigos.length > 0)
+      sections.push({
+        title: t("rightMenu.sections.onlineFriends", { count: onlineAmigos.length }),
+        data: onlineAmigos,
+        type: "online",
+      });
+    if (onlineBookmarks.length > 0)
+      sections.push({
+        title: t("rightMenu.sections.onlineBookmarks", { count: onlineBookmarks.length }),
+        data: onlineBookmarks,
+        type: "online",
+      });
+
+    return sections;
+  }, [friends, onlineCharacters, apiFriends, t]);
 
   const getRoleData = (name: string) => {
     if (globalOps.includes(name))
@@ -75,14 +74,27 @@ export function RightMenu({ onSelect }: { onSelect: () => void }) {
     return { rank: 4, icon: null, color: null };
   };
 
-  const roomMembers = room
-    ? [...room.users].sort((a, b) => {
-        const rankA = getRoleData(a).rank;
-        const rankB = getRoleData(b).rank;
-        if (rankA !== rankB) return rankA - rankB;
-        return a.toLowerCase().localeCompare(b.toLowerCase());
-      })
-    : [];
+  const roomUsers = room?.users;
+  const roomOwner = room?.owner;
+  const roomOplist = room?.oplist;
+
+  const roomMembers = useMemo(() => {
+    if (!roomUsers) return [];
+
+    const getRank = (name: string) => {
+      if (globalOps.includes(name)) return 1;
+      if (roomOwner === name) return 2;
+      if (roomOplist?.includes(name)) return 3;
+      return 4;
+    };
+
+    return [...roomUsers].sort((a, b) => {
+      const rankA = getRank(a);
+      const rankB = getRank(b);
+      if (rankA !== rankB) return rankA - rankB;
+      return a.toLowerCase().localeCompare(b.toLowerCase());
+    });
+  }, [roomUsers, roomOwner, roomOplist, globalOps]);
 
   const renderMemberRow = ({ item }: { item: string }) => {
     const charData = onlineCharacters[item];
@@ -177,13 +189,10 @@ export function RightMenu({ onSelect }: { onSelect: () => void }) {
             <Text style={styles.sectionHeader}>{title}</Text>
           )}
           renderItem={({ item, section }) => {
-            const isOnline = section.type !== "offline";
             const charData = onlineCharacters[item];
             const roleData = getRoleData(item);
 
-            const statusIcon = isOnline
-              ? getStatusIcon(charData?.status)
-              : "close";
+            const statusIcon = getStatusIcon(charData?.status);
             const nameColor = getGenderColor(charData?.gender);
 
             return (
@@ -192,7 +201,7 @@ export function RightMenu({ onSelect }: { onSelect: () => void }) {
                   <Ionicons
                     name={statusIcon as any}
                     size={14}
-                    color={isOnline ? nameColor : "#444"}
+                    color={nameColor}
                     style={{ marginRight: 6 }}
                   />
                   {roleData.icon && (
@@ -206,7 +215,7 @@ export function RightMenu({ onSelect }: { onSelect: () => void }) {
                   <Text
                     style={[
                       styles.friendName,
-                      { color: isOnline ? nameColor : "#666" },
+                      { color: nameColor },
                     ]}
                   >
                     {item}
@@ -223,7 +232,10 @@ export function RightMenu({ onSelect }: { onSelect: () => void }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { 
+    flex: 1,
+    paddingTop: Platform.OS === "ios" ? 50 : 40,
+  },
   tabContainer: {
     flexDirection: "row",
     backgroundColor: "#1a1a1a",

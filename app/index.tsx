@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { AppState, AppStateStatus, KeyboardAvoidingView, Platform } from "react-native";
+import {
+  AppState,
+  AppStateStatus,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { useChatStore } from "@/store/useChatStore";
 import { useSettingsStore } from "@/store/useSettingsStore";
 import { LoginScreen } from "@/components/auth/LoginScreen";
@@ -14,23 +19,29 @@ export default function AppScreen() {
   }, []);
 
   useEffect(() => {
-    const subscription = AppState.addEventListener("change", (nextAppState: AppStateStatus) => {
-      if (nextAppState === "active") {
-        console.log("App volvió al primer plano");
-      } else {
-        console.log("App en segundo plano");
-        if (ws && ws.readyState === WebSocket.OPEN) {
+    const subscription = AppState.addEventListener(
+      "change",
+      (nextAppState: AppStateStatus) => {
+        if (nextAppState === "active") {
+          console.log("App volvió al primer plano");
+        } else {
+          console.log("App en segundo plano");
+          if (ws && ws.readyState === WebSocket.OPEN) {
             ws.send("PIN");
+          }
         }
-      }
-    });
+      },
+    );
     return () => subscription.remove();
   }, [ws]);
 
   if (!isWsConnected) return <LoginScreen />;
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: "#1a1a1a" }}
+      behavior="padding"
+    >
       <MainLayout />
     </KeyboardAvoidingView>
   );
